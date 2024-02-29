@@ -2,6 +2,12 @@
 
 This is a [React](https://reactjs.org) + [TypeScript](https://www.typescriptlang.org/) boilerplate built with [Vite](https://vitejs.dev).
 
+## Requirements
+
+- NodeJS 21 LTS
+- Docker
+- yarn
+
 ## What's inside?
 
 - [ReactJS](https://reactjs.org)
@@ -14,6 +20,34 @@ This is a [React](https://reactjs.org) + [TypeScript](https://www.typescriptlang
 - [Prettier](https://prettier.io)
 - [Polyfills](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy#readme)
 - [Chakra UI]()
+
+## Deploy
+
+### Docker file
+
+#### How to Run
+
+Build the image:
+
+```sh
+docker build -t adrianlemess/user-management .
+```
+
+Run the image in the port 8080 (First value in the -p parameter):
+
+```sh
+docker run -d -p 8080:80 adrianlemess/user-management
+```
+
+Check if the image is running properly:
+
+```sh
+docker ps
+```
+
+```sh
+docker stop -t=0 id_image
+```
 
 ## Getting started
 
