@@ -2,6 +2,8 @@
 
 This is a [React](https://reactjs.org) + [TypeScript](https://www.typescriptlang.org/) boilerplate built with [Vite](https://vitejs.dev).
 
+Kanban and tasks planned [here](https://occipital-eater-a86.notion.site/d1fa98ddd34148f18bedec785d373469?v=0f9997d3f912470abc6ecccb705476ab&pvs=4)
+
 ## Requirements
 
 - NodeJS 21 LTS
