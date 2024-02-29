@@ -20,6 +20,7 @@ This is a [React](https://reactjs.org) + [TypeScript](https://www.typescriptlang
 - [Prettier](https://prettier.io)
 - [Polyfills](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy#readme)
 - [Chakra UI]()
+- [Docker]()
 
 ## Deploy
 
