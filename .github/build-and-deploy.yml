@@ -1,0 +1,112 @@
+name: User Management - 1Global
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: "21"
+
+jobs:
+  inspections:
+    name: Inspections
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        inspection_command:
+          [
+            "lint:ci",
+            "prettier:ci",
+            "typecheck",
+            "test:coverage",
+            "test:e2e:ci",
+          ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          check-latest: true
+
+      - name: Cache dependencies
+        id: cache_dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+
+          key: ${{ runner.os }}-npm-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.cache_dependencies.outputs.cache-hit != 'true'
+        run: yarn install
+
+      - name: Run inspection
+        run: yarn ${{ matrix.inspection_command }}
+
+  build:
+    name: Build project
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          check-latest: true
+
+      - name: Cache dependencies
+        id: cache_dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+
+          key: ${{ runner.os }}-npm-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.cache_dependencies.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Run build
+        run: yarn build
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist
+          retention-days: 2
+
+  # deploy_netlify:
+  #   name: Deploy to Netlify
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 15
+  #   needs: [inspections, build]
+
+  #   steps:
+  #     - name: Download build artifacts
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: dist
+  #         path: dist
+
+  #     - name: Deploy project into Netlify
+  #       env:
+  #         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+  #         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+  #         NETLIFY_DEPLOY_TO_PROD: true
+  #       run: netlify deploy --prod
