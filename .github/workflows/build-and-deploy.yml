@@ -1,4 +1,4 @@
-name: User Management - 1Global
+name: Build and Deploy
 
 on:
   push:
@@ -47,7 +47,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache_dependencies.outputs.cache-hit != 'true'
-        run: yarn install
+        run: yarn
 
       - name: Run inspection
         run: yarn ${{ matrix.inspection_command }}
@@ -79,7 +79,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache_dependencies.outputs.cache-hit != 'true'
-        run: npm ci
+        run: yarn
 
       - name: Run build
         run: yarn build
@@ -91,22 +91,25 @@ jobs:
           path: dist
           retention-days: 2
 
-  # deploy_netlify:
-  #   name: Deploy to Netlify
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 15
-  #   needs: [inspections, build]
+  deploy:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [inspections, build]
 
-  #   steps:
-  #     - name: Download build artifacts
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: dist
-  #         path: dist
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
 
-  #     - name: Deploy project into Netlify
-  #       env:
-  #         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-  #         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-  #         NETLIFY_DEPLOY_TO_PROD: true
-  #       run: netlify deploy --prod
+      - uses: actions/checkout@v2
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.AUTH_VERCEL }}
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
