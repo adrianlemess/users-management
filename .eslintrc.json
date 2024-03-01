@@ -19,6 +19,7 @@
   ],
   "rules": {
     "import/first": "warn",
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "import/newline-after-import": "warn",
     "import/no-duplicates": "error",
     "import/no-named-as-default-member": "off",
