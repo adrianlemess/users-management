@@ -17,12 +17,7 @@ jobs:
     strategy:
       matrix:
         inspection_command:
-          [
-            "lint:ci",
-            "prettier:ci",
-            "typecheck",
-            "test:coverage",
-          ]
+          ["lint:ci", "prettier:ci", "typecheck", "test:coverage"]
 
     steps:
       - name: Checkout
@@ -112,4 +107,3 @@ jobs:
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-        
