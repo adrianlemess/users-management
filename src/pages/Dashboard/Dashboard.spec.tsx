@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 
-import HelloWorld from "./HelloWorld";
+import Dashboard from "./Dashboard";
 
-describe("HelloWorld", () => {
+describe("Dashboard", () => {
   it("should renders a msg", () => {
     // arrange
-    render(<HelloWorld msg="Hello React!" />);
+    render(<Dashboard msg="Hello React!" />);
 
     // act
     const title = screen.getByTestId("title");

@@ -1,13 +1,34 @@
-import Logo from "@/assets/logo.png";
-import HelloWorld from "@/components/HelloWorld/HelloWorld";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import styles from "./App.module.scss";
+import BaseLayout from "./components/Layout/BaseLayout/BaseLayout";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import SignIn from "./pages/SignIn/SignIn";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <BaseLayout />,
+    children: [
+      {
+        path: "dashboard",
+        element: <Dashboard msg="Hello Adrian" />,
+      },
+    ],
+  },
+  {
+    path: "sign-in",
+    element: <SignIn />,
+  },
+  {
+    path: "sign-up",
+    element: <SignIn />,
+  },
+]);
 
 export default function App() {
   return (
-    <main className={styles.main}>
-      <img className={styles.logo} alt="React logo" width="400px" src={Logo} />
-      <HelloWorld msg="Hello React + TypeScript + Vite" />
-    </main>
+    <>
+      <RouterProvider router={router} />
+    </>
   );
 }

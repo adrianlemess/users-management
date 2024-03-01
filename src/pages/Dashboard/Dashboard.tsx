@@ -1,18 +1,18 @@
 import { useState } from "react";
 
-import styles from "./HelloWorld.module.scss";
+import styles from "./Dashboard.module.scss";
 
-interface HelloWorldProps {
+interface DashboardProps {
   msg: string;
 }
 
-export default function HelloWorld(props: HelloWorldProps) {
+export default function Dashboard(props: DashboardProps) {
   const [count, setCount] = useState(0);
 
   const increment = () => setCount(prevCount => prevCount + 1);
 
   return (
-    <div className={styles.HelloWorld}>
+    <div className={styles.Dashboard}>
       <h1 data-testid="title">{props.msg}</h1>
 
       <p>
@@ -49,7 +49,7 @@ export default function HelloWorld(props: HelloWorldProps) {
       </button>
       <p>
         Edit
-        <code>components/HelloWorld/HelloWorld.tsx</code> to test hot module
+        <code>components/Dashboard/Dashboard.tsx</code> to test hot module
         replacement.
       </p>
     </div>
