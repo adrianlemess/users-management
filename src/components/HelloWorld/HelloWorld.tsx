@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import styles from "./HelloWorld.module.css";
+import styles from "./HelloWorld.module.scss";
 
 interface HelloWorldProps {
   msg: string;

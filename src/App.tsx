@@ -1,7 +1,7 @@
 import Logo from "@/assets/logo.png";
 import HelloWorld from "@/components/HelloWorld/HelloWorld";
 
-import styles from "./App.module.css";
+import styles from "./App.module.scss";
 
 export default function App() {
   return (
