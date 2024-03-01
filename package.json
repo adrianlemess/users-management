@@ -7,6 +7,9 @@
     "url": "https://github.com/fabien-ml"
   },
   "scripts": {
+    "analyze:network": "vite-bundle-visualizer -t network",
+    "analyze:sunburst": "vite-bundle-visualizer -t sunburst",
+    "analyze:tree": "vite-bundle-visualizer --open",
     "build": "npm run typecheck && vite build",
     "commit": "git-cz",
     "dev": "vite",
@@ -19,7 +22,8 @@
     "test:unit": "jest --watch",
     "test:unit:ci": "jest",
     "test:unit:coverage": "jest --silent --watchAll=false --coverage",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "vite:analyze": "vite build --mode analyze"
   },
   "lint-staged": {
     "*.{css,md,json}": [
@@ -78,10 +82,12 @@
     "jest-environment-jsdom": "^28.1.1",
     "lint-staged": "^13.0.2",
     "prettier": "^2.7.1",
+    "sass": "^1.71.1",
     "sort-package-json": "^1.57.0",
     "start-server-and-test": "^1.14.0",
     "ts-jest": "^28.0.5",
     "typescript": "^4.7.4",
-    "vite": "^2.9.12"
+    "vite": "^2.9.12",
+    "vite-bundle-visualizer": "^1.0.1"
   }
 }
