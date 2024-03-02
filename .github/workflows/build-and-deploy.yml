@@ -108,12 +108,16 @@ jobs:
           DEPLOY_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} | grep "Preview:" | awk '{print $2}')
           echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
 
-      - name: Comment PR with Preview URL
-        uses: unsplash/comment-on-pr@v1.3.0
+      - name: echo DEPLOY_URL
+        run: echo $DEPLOY_URL
+      - name: Add comment on PR
+        run: |
+          cat << EOF | gh pr comment ${{ github.event.pull_request.number }} --body-file -
+          |  Name | Link |
+          |---------------------------------|------------------------|
+          |<span aria-hidden="true">🔨</span> Latest commit | [${{ github.event.pull_request.head.sha }}](https://github.com/webb-tools/webb-dapp/commit/${{ github.event.pull_request.head.sha }}) |
+          |<span aria-hidden="true">🔍</span> App preview deployed | ${{ env.DEPLOY_URL }} |
+          ---
+          EOF
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          msg: "Preview URL: ${{ env.DEPLOY_URL }}"
-          check_for_duplicate_msg: true
-          delete_prev_regex_msg: "Preview URL: .*"
-          duplicate_msg_pattern: "Preview URL: .*"
