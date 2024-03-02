@@ -106,12 +106,12 @@ jobs:
         id: deploy
         run: |
           DEPLOY_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} | grep "Preview:" | awk '{print $2}')
-          echo "::set-output name=preview_url::$DEPLOY_URL"
+          echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
 
       - name: Comment PR with Preview URL
         uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          msg: "Preview URL: ${{ steps.deploy.outputs.preview_url }}"
+          msg: "Preview URL: ${{ env.DEPLOY_URL }}"
           check_for_duplicate_msg: true
