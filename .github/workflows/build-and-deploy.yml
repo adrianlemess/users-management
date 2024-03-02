@@ -105,7 +105,11 @@ jobs:
       - name: Deploy Project Artifacts to Vercel
         id: deploy
         run: |
-          DEPLOY_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} | grep "Preview:" | awk '{print $2}')
+          DEPLOY_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} | grep "Preview:" | awk '{print $2}') || echo "Deploy failed"
+          if [ -z "$DEPLOY_URL" ]; then
+            echo "DEPLOY_URL is not set"
+            exit 1
+          fi
           echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
 
       - name: echo DEPLOY_URL
