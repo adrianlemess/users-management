@@ -113,15 +113,14 @@ jobs:
               echo "There was an error: $errorMessage"
               exit 1
           fi
-      - name: echo DEPLOY_URL
-        run: echo ${{ env.DEPLOY_URL }}
       - name: Comment PR
         run: |
           echo "DEPLOY_URL=${{ env.DEPLOY_URL }}" >> $GITHUB_ENV
           echo "
-          |  |  |
+          | Environment | URL |
           | - | - |
           | 🚀 Preview URL | ${{ env.DEPLOY_URL }} |
+          | 🚀 Production URL | ${{ secret.PRODUCTION_URL }}
           " > comment.txt
           gh pr comment ${{ github.event.pull_request.number }} --body-file comment.txt
         env:
