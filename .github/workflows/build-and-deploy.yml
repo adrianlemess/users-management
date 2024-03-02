@@ -106,22 +106,12 @@ jobs:
         id: deploy
         run: |
           DEPLOY_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} | grep "Preview:" | awk '{print $2}')
-          echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
+          echo "::set-output name=preview_url::$DEPLOY_URL"
 
       - name: Comment PR with Preview URL
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v5
-        with:
-          script: |
-            const deployUrl = process.env.DEPLOY_URL;
-            const prNumber = context.issue.number;
-            const message = `Preview URL: ${deployUrl}`;
-            github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: message
-            });
+        uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEPLOY_URL: ${{ env.DEPLOY_URL }}
+        with:
+          msg: "Preview URL: ${{ steps.deploy.outputs.preview_url }}"
+          check_for_duplicate_msg: true
