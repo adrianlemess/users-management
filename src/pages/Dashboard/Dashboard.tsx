@@ -16,7 +16,7 @@ export default function Dashboard(props: DashboardProps) {
       <h1 data-testid="title">{props.msg}</h1>
 
       <p>
-        Recommended IDE setup - new deploy:{" "}
+        Recommended IDE setup:{" "}
         <a
           href="https://code.visualstudio.com/"
           target="_blank"

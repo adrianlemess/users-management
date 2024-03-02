@@ -1,6 +1,8 @@
-name: Build and Deploy
+name: User Management - 1Global
 
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -15,7 +17,13 @@ jobs:
     strategy:
       matrix:
         inspection_command:
-          ["lint:ci", "prettier:ci", "typecheck", "test:coverage"]
+          [
+            "lint:ci",
+            "prettier:ci",
+            "typecheck",
+            "test:coverage",
+            "test:e2e:ci",
+          ]
 
     steps:
       - name: Checkout
@@ -39,7 +47,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache_dependencies.outputs.cache-hit != 'true'
-        run: yarn
+        run: yarn install
 
       - name: Run inspection
         run: yarn ${{ matrix.inspection_command }}
@@ -71,7 +79,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cache_dependencies.outputs.cache-hit != 'true'
-        run: yarn
+        run: npm ci
 
       - name: Run build
         run: yarn build
@@ -83,45 +91,22 @@ jobs:
           path: dist
           retention-days: 2
 
-  deploy:
-    name: Deploy to Preview Vercel
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    needs: [inspections, build]
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dist
-          path: dist
-      - uses: actions/checkout@v2
-      - name: Install Vercel CLI
-        run: npm install --global vercel@canary
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Build Project Artifacts
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy to Vercel
-        run: |
-          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} >deployment-url.txt 2>error.txt
-          code=$?
-          if [ $code -eq 0 ]; then
-              deploymentUrl=`cat deployment-url.txt`
-              echo "DEPLOY_URL=$deploymentUrl" >> $GITHUB_ENV
-          else
-              errorMessage=`cat error.txt`
-              echo "There was an error: $errorMessage"
-              exit 1
-          fi
-      - name: Comment PR
-        run: |
-          echo "DEPLOY_URL=${{ env.DEPLOY_URL }}" >> $GITHUB_ENV
-          echo "
-          | Environment | URL |
-          | - | - |
-          | 🚀 Preview URL | ${{ env.DEPLOY_URL }} |
-          | 🚀 Production URL | ${{ secrets.PRODUCTION_URL }}
-          " > comment.txt
-          gh pr comment ${{ github.event.pull_request.number }} --body-file comment.txt
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # deploy_netlify:
+  #   name: Deploy to Netlify
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 15
+  #   needs: [inspections, build]
+
+  #   steps:
+  #     - name: Download build artifacts
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: dist
+  #         path: dist
+
+  #     - name: Deploy project into Netlify
+  #       env:
+  #         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+  #         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+  #         NETLIFY_DEPLOY_TO_PROD: true
+  #       run: netlify deploy --prod
