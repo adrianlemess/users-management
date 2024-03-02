@@ -88,7 +88,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: [inspections, build]
-
+    permissions:
+      pull-requests: write
     steps:
       - name: Download build artifacts
         uses: actions/download-artifact@v2
@@ -116,13 +117,10 @@ jobs:
           fi
       - name: echo DEPLOY_URL
         run: echo ${{ env.DEPLOY_URL }}
-      - name: Add comment on PR
-        run: |
-          cat << EOF | gh pr comment ${{ github.event.pull_request.number }} --body-file -
-          |  Name | Link |
-          |---------------------------------|------------------------|
-          |<span aria-hidden="true">🔍</span> App preview deployed | ${{ env.DEPLOY_URL }} |
-          ---
-          EOF
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: Preview URL
+          message: |
+            |  |  |
+            | - | - |
+            | 🚀 Preview URL | ${{ env.DEPLOY_URL }} |
