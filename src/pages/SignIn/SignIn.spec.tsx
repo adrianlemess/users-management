@@ -1,16 +1,17 @@
 import { render, screen } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
 
 import SignIn from "./SignIn";
 
 describe("SignIn", () => {
   it("should renders a msg", () => {
     // arrange
-    render(<SignIn />);
+    render(<SignIn />, { wrapper: BrowserRouter });
 
     // act
-    const title = screen.getByText("Sign in page");
+    const button = screen.getByText("Sign In");
 
     // assert
-    expect(title).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
   });
 });
