@@ -1,0 +1,11 @@
+// By default Chakra-ui already have a reset definition, this is for additional rules
+
+// Remove input icons in Edge
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
+::-ms-reveal {
+  display: none;
+}
