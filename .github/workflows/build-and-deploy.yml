@@ -102,16 +102,18 @@ jobs:
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy Project Artifacts to Vercel
-        id: deploy
+      - name: Deploy to Vercel
         run: |
-          DEPLOY_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} | grep "Preview:" | awk '{print $2}') || echo "Deploy failed"
-          if [ -z "$DEPLOY_URL" ]; then
-            echo "DEPLOY_URL is not set"
-            exit 1
+          vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} >deployment-url.txt 2>error.txt
+          code=$?
+          if [ $code -eq 0 ]; then
+              deploymentUrl=`cat deployment-url.txt`
+              echo "DEPLOY_URL=$deploymentUrl" >> $GITHUB_ENV
+          else
+              errorMessage=`cat error.txt`
+              echo "There was an error: $errorMessage"
+              exit 1
           fi
-          echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
-
       - name: echo DEPLOY_URL
         run: echo ${{ env.DEPLOY_URL }}
       - name: Add comment on PR
