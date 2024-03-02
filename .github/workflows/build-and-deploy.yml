@@ -120,7 +120,7 @@ jobs:
           | Environment | URL |
           | - | - |
           | 🚀 Preview URL | ${{ env.DEPLOY_URL }} |
-          | 🚀 Production URL | ${{ env.PRODUCTION_URL }}
+          | 🚀 Production URL | ${{ secrets.PRODUCTION_URL }}
           " > comment.txt
           gh pr comment ${{ github.event.pull_request.number }} --body-file comment.txt
         env:
