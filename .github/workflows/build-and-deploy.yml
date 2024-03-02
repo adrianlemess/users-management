@@ -109,7 +109,7 @@ jobs:
           echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
 
       - name: echo DEPLOY_URL
-        run: echo ${{ env.DEPLOY_URL }} and ${{ }}
+        run: echo ${{ env.DEPLOY_URL }}
       - name: Add comment on PR
         run: |
           cat << EOF | gh pr comment ${{ github.event.pull_request.number }} --body-file -
