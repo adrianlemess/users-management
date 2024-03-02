@@ -109,13 +109,12 @@ jobs:
           echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
 
       - name: echo DEPLOY_URL
-        run: echo $DEPLOY_URL
+        run: echo ${{ env.DEPLOY_URL }} and ${{ }}
       - name: Add comment on PR
         run: |
           cat << EOF | gh pr comment ${{ github.event.pull_request.number }} --body-file -
           |  Name | Link |
           |---------------------------------|------------------------|
-          |<span aria-hidden="true">🔨</span> Latest commit | [${{ github.event.pull_request.head.sha }}](https://github.com/webb-tools/webb-dapp/commit/${{ github.event.pull_request.head.sha }}) |
           |<span aria-hidden="true">🔍</span> App preview deployed | ${{ env.DEPLOY_URL }} |
           ---
           EOF
