@@ -1,8 +1,13 @@
 /** @type {import('@jest/types').Config.InitialOptions} */
 export default {
+  // To fix MSW issue
+  // https://stackoverflow.com/questions/77399773/cannot-find-module-msw-node-from
+  testEnvironmentOptions: {
+    customExportConditions: [""],
+  },
   // The test environment that will be used for testing, jsdom for browser environment
   // https://jestjs.io/docs/configuration#testenvironment-string
-  testEnvironment: "jsdom",
+  testEnvironment: "./test.environment.js",
 
   // A list of paths to directories that Jest should use to search for files in
   // https://jestjs.io/docs/configuration#roots-arraystring
@@ -10,17 +15,22 @@ export default {
 
   // The glob patterns Jest uses to detect test files.
   // https://jestjs.io/docs/configuration#testmatch-arraystring
-  testMatch: ["**/*.spec.ts?(x)"],
+  testMatch: ["**/*.spec.ts?(x)", "**/*.test.ts?(x)"],
 
   // Jest transformations
   // https://jestjs.io/docs/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object
   transform: {
-    "^.+\\.tsx?$": "ts-jest", // Transform TypeScript files using ts-jest
+    "^.+\\.tsx?$": [
+      "ts-jest",
+      {
+        tsconfig: "./tsconfig-spec.json",
+      },
+    ], // Transform TypeScript files using ts-jest
   },
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test file in the suite is executed
   // https://jestjs.io/docs/configuration#setupfilesafterenv-array
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  setupFilesAfterEnv: ["<rootDir>/src/__tests__/jest.setup.ts"],
 
   // Code coverage config
   // https://jestjs.io/docs/configuration#collectcoveragefrom-array

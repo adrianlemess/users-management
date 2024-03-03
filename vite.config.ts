@@ -5,10 +5,18 @@ import { defineConfig } from "vite";
 export default ({ mode }: { mode: string }) => {
   return defineConfig({
     plugins: [react()],
+
     build: {
       chunkSizeWarningLimit: 200,
       minify: mode === "production",
       rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("node_modules")) {
+              return "vendors";
+            }
+          },
+        },
         onwarn(warning, warn) {
           if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
             return;

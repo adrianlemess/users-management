@@ -80,6 +80,8 @@
       "rules": {
         "jest/no-disabled-tests": "warn",
         "jest/no-focused-tests": "error",
+        "testing-library/no-unnecessary-act": "off",
+        "jest/no-standalone-expect": "off",
         "jest/no-identical-title": "error",
         "jest/prefer-to-have-length": "warn",
         "jest/valid-expect": "error",
