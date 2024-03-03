@@ -23,14 +23,5 @@ export default ({ mode }: { mode: string }) => {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
-    server: {
-      proxy: {
-        "/api": {
-          target: "https://reqres.in/api",
-          secure: false,
-          rewrite: path => path.replace(/^\/api/, ""),
-        },
-      },
-    },
   });
 };
