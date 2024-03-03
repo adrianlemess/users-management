@@ -99,8 +99,8 @@ export default function SignUp() {
               // Delete the confirmation_password field before sending the data to the API
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               const { confirmation_password, ...userSignUpInput } = values;
-              setUserSignUp(userSignUpInput);
               handleSignUp(userSignUpInput);
+              setUserSignUp(userSignUpInput);
             }}
           >
             {() => (
