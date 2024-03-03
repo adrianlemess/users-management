@@ -1,9 +1,10 @@
 export type User = {
-  id: string;
+  // When we send the user to the API, we don't include the id
+  id?: string;
   email: string;
   first_name: string;
   last_name: string;
-  avatar: string;
+  avatar?: string;
 };
 
 export type UserSignInInput = {

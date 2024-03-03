@@ -15,19 +15,13 @@ const axiosClient = axios.create(defaultOptions);
 
 // Set the AUTH token for any request
 axiosClient.interceptors.request.use(function (config) {
-  console.log({ defaultOptions, url: config.url, headers: config.headers });
-
   // Add delay to requests if DELAY_REQUESTS is set (for testing purposes)
   // @TODO remove this in production
 
   if (DELAY_REQUESTS) {
     // update url with delay parameter
     const url = new URL(`${defaultOptions.baseURL}${config.url}` || "");
-    console.log({
-      url,
-      configUrl: config.url,
-      baseURL: defaultOptions.baseURL,
-    });
+
     url.searchParams.set("delay", `${DELAY_REQUESTS}`);
     config.url = url.toString();
   }

@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   Image,
   Input,
   InputGroup,
@@ -11,36 +12,32 @@ import {
   Link,
   Stack,
 } from "@chakra-ui/react";
+import { Field, FieldInputProps, Form, Formik, FormikProps } from "formik";
 import { useState } from "react";
 import { Link as ReactRouterLink } from "react-router-dom";
 
 import Logo from "@/assets/logo.png";
 import { ReactIcons } from "@/components/Icons/Icons";
+import { useSignUp } from "@/hooks";
+import { SignUpSchema } from "@/utils";
 
-type ShowPasswordType = "password" | "confirmationPassword";
+type ShowPasswordType = "password" | "confirmation_password";
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState<
     Record<ShowPasswordType, boolean>
   >({
     password: false,
-    confirmationPassword: false,
+    confirmation_password: false,
   });
 
-  const [loading, setLoading] = useState(false);
+  const { requestStatus, handleSignUp } = useSignUp();
 
   const handleShowPassword = (type: ShowPasswordType) => {
     setShowPassword({
       ...showPassword,
       [type]: !showPassword[type],
     });
-  };
-
-  const handleSignUp = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
   };
 
   return (
@@ -56,120 +53,233 @@ export default function SignUp() {
           shadow="md"
         >
           <Image src={Logo} marginY={10} mx={5} alt="1Global Logo" />
-          <form>
-            <Stack spacing={4}>
-              <FormControl>
-                <InputGroup size="md">
-                  <InputLeftElement
-                    children={<ReactIcons.User color="gray.300" />}
-                    pointerEvents="none"
-                  />
-                  <Input
+          <Formik
+            initialValues={{
+              email: "",
+              password: "",
+              confirmation_password: "",
+              first_name: "",
+              last_name: "",
+            }}
+            validationSchema={SignUpSchema}
+            onSubmit={values => {
+              // Delete the confirmation_password field before sending the data to the API
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              const { confirmation_password, ...userSignup } = values;
+              handleSignUp(userSignup);
+            }}
+          >
+            {() => (
+              <Form>
+                <Stack spacing={4}>
+                  <Field
+                    name="first_name"
+                    type="text"
+                    label="First Name"
                     autoComplete="given-name"
-                    placeholder="Name"
-                    name="first-name"
+                  >
+                    {({
+                      field,
+                      form,
+                    }: {
+                      field: FieldInputProps<string>;
+                      form: FormikProps<{ first_name: string }>;
+                    }) => (
+                      <FormControl
+                        isInvalid={
+                          !!form.errors.first_name && !!form.touched.first_name
+                        }
+                      >
+                        <InputGroup size="md">
+                          <InputLeftElement
+                            children={<ReactIcons.User color="gray.300" />}
+                            pointerEvents="none"
+                          />
+                          <Input {...field} placeholder="First Name" />
+                        </InputGroup>
+                        <FormErrorMessage>
+                          {form.errors.first_name}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field
+                    name="last_name"
                     type="text"
-                  />
-                </InputGroup>
-              </FormControl>
-              <FormControl>
-                <InputGroup size="md">
-                  <InputLeftElement
-                    children={<ReactIcons.User color="gray.300" />}
-                    pointerEvents="none"
-                  />
-                  <Input
+                    label="Last Name"
                     autoComplete="last-name"
-                    placeholder="Last Name"
-                    type="text"
-                    name="last-name"
-                  />
-                </InputGroup>
-              </FormControl>
-              <FormControl>
-                <InputGroup size="md">
-                  <InputLeftElement
-                    children={<ReactIcons.Email color="gray.300" />}
-                    pointerEvents="none"
-                  />
-                  <Input
-                    autoComplete="email"
-                    placeholder="Email address"
-                    type="email"
+                  >
+                    {({
+                      field,
+                      form,
+                    }: {
+                      field: FieldInputProps<string>;
+                      form: FormikProps<{ last_name: string }>;
+                    }) => (
+                      <FormControl
+                        isInvalid={
+                          !!form.errors.last_name && !!form.touched.last_name
+                        }
+                      >
+                        <InputGroup size="md">
+                          <InputLeftElement
+                            children={<ReactIcons.User color="gray.300" />}
+                            pointerEvents="none"
+                          />
+                          <Input {...field} placeholder="Last Name" />
+                        </InputGroup>
+                        <FormErrorMessage>
+                          {form.errors.last_name}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field
                     name="email"
-                  />
-                </InputGroup>
-              </FormControl>
-              <FormControl>
-                <InputGroup size="md">
-                  <InputLeftElement
-                    children={<ReactIcons.Password color="gray.300" />}
-                    pointerEvents="none"
-                  />
-                  <Input
-                    pr="4.5rem"
-                    autoComplete="new-password"
-                    type={showPassword.password ? "text" : "password"}
-                    placeholder="Enter password"
+                    type="email"
+                    label="email"
+                    autoComplete="email"
+                  >
+                    {({
+                      field,
+                      form,
+                    }: {
+                      field: FieldInputProps<string>;
+                      form: FormikProps<{ email: string }>;
+                    }) => (
+                      <FormControl
+                        isInvalid={!!form.errors.email && !!form.touched.email}
+                      >
+                        <InputGroup size="md">
+                          <InputLeftElement
+                            children={<ReactIcons.Email color="gray.300" />}
+                            pointerEvents="none"
+                          />
+                          <Input {...field} placeholder="Email address" />
+                        </InputGroup>
+                        <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field
                     name="password"
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button
-                      h="1.75rem"
-                      size="sm"
-                      colorScheme="teal"
-                      variant="outline"
-                      onClick={() => handleShowPassword("password")}
-                    >
-                      {showPassword.password ? "Hide" : "Show"}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-              <FormControl>
-                <InputGroup size="md">
-                  <InputLeftElement
-                    children={<ReactIcons.Password color="gray.300" />}
-                    pointerEvents="none"
-                  />
-                  <Input
-                    pr="4.5rem"
+                    label="Enter Password"
                     autoComplete="new-password"
-                    name="confirmation-password"
-                    type={
-                      showPassword.confirmationPassword ? "text" : "password"
-                    }
-                    placeholder="Retype password"
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button
-                      h="1.75rem"
-                      size="sm"
-                      colorScheme="teal"
-                      variant="outline"
-                      onClick={() => handleShowPassword("confirmationPassword")}
-                    >
-                      {showPassword.confirmationPassword ? "Hide" : "Show"}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-              <Button
-                isLoading={loading}
-                loadingText="Signing Up"
-                variant="bluePrimary"
-                textAlign="center"
-                borderWidth="1px"
-                borderRadius="md"
-                my={4}
-                overflow="hidden"
-                shadow="md"
-                onClick={handleSignUp}
-              >
-                Sign Up
-              </Button>
-            </Stack>
-          </form>
+                  >
+                    {({
+                      field,
+                      form,
+                    }: {
+                      field: FieldInputProps<string>;
+                      form: FormikProps<{ password: string }>;
+                    }) => (
+                      <FormControl
+                        isInvalid={
+                          !!form.errors.password && !!form.touched.password
+                        }
+                      >
+                        <InputGroup size="md">
+                          <InputLeftElement
+                            children={<ReactIcons.Password color="gray.300" />}
+                            pointerEvents="none"
+                          />
+                          <Input
+                            {...field}
+                            type={showPassword.password ? "text" : "password"}
+                            pr="4.5rem"
+                            placeholder="Enter password"
+                          />
+                          <InputRightElement width="4.5rem">
+                            <Button
+                              h="1.75rem"
+                              size="sm"
+                              colorScheme="teal"
+                              variant="outline"
+                              onClick={() => handleShowPassword("password")}
+                            >
+                              {showPassword.password ? "Hide" : "Show"}
+                            </Button>
+                          </InputRightElement>
+                        </InputGroup>
+                        <FormErrorMessage>
+                          {form.errors.password}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field
+                    name="confirmation_password"
+                    autoComplete="new-password"
+                    label="Confirmation Name"
+                  >
+                    {({
+                      field,
+                      form,
+                    }: {
+                      field: FieldInputProps<string>;
+                      form: FormikProps<{ confirmation_password: string }>;
+                    }) => (
+                      <FormControl
+                        isInvalid={
+                          !!form.errors.confirmation_password &&
+                          !!form.touched.confirmation_password
+                        }
+                      >
+                        <InputGroup size="md">
+                          <InputLeftElement
+                            children={<ReactIcons.Password color="gray.300" />}
+                            pointerEvents="none"
+                          />
+                          <Input
+                            {...field}
+                            type={
+                              showPassword.confirmation_password
+                                ? "text"
+                                : "password"
+                            }
+                            pr="4.5rem"
+                            placeholder="Confirmation password"
+                          />
+                          <InputRightElement width="4.5rem">
+                            <Button
+                              h="1.75rem"
+                              size="sm"
+                              colorScheme="teal"
+                              variant="outline"
+                              onClick={() =>
+                                handleShowPassword("confirmation_password")
+                              }
+                            >
+                              {showPassword.confirmation_password
+                                ? "Hide"
+                                : "Show"}
+                            </Button>
+                          </InputRightElement>
+                        </InputGroup>
+                        <FormErrorMessage>
+                          {form.errors.confirmation_password}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Button
+                    isLoading={requestStatus === "pending"}
+                    loadingText="Signing Up"
+                    variant="bluePrimary"
+                    textAlign="center"
+                    borderWidth="1px"
+                    borderRadius="md"
+                    my={4}
+                    overflow="hidden"
+                    shadow="md"
+                    type="submit"
+                  >
+                    Sign Up
+                  </Button>
+                </Stack>
+              </Form>
+            )}
+          </Formik>
         </Stack>
       </Stack>
       <Flex justifyContent="end">

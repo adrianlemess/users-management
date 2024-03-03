@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   FormControl,
+  FormErrorMessage,
   Image,
   Input,
   InputGroup,
@@ -11,12 +12,14 @@ import {
   Link,
   Stack,
 } from "@chakra-ui/react";
+import { Field, FieldInputProps, Form, Formik, FormikProps } from "formik";
 import { useState } from "react";
 import { Link as ReactRouterLink } from "react-router-dom";
 
 import Logo from "@/assets/logo.png";
 import { ReactIcons } from "@/components/Icons/Icons";
 import { useSignIn } from "@/hooks";
+import { SignInSchema } from "@/utils";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,68 +43,108 @@ export default function SignIn() {
           shadow="md"
         >
           <Image src={Logo} marginY={10} mx={5} alt="1Global Logo" />
-          <form>
-            <Stack spacing={4}>
-              <FormControl>
-                <InputGroup size="md">
-                  <InputLeftElement
-                    children={<ReactIcons.Email color="gray.300" />}
-                    pointerEvents="none"
-                  />
-                  <Input
-                    autoComplete="email"
-                    placeholder="Email address"
-                    type="email"
-                  />
-                </InputGroup>
-              </FormControl>
-              <FormControl>
-                <InputGroup size="md">
-                  <InputLeftElement
-                    children={<ReactIcons.Password color="gray.300" />}
-                    pointerEvents="none"
-                  />
-                  <Input
-                    pr="4.5rem"
-                    type={showPassword ? "text" : "password"}
-                    autoComplete="current-password"
-                    placeholder="Enter password"
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button
-                      h="1.75rem"
-                      colorScheme="teal"
-                      variant="outline"
-                      size="sm"
-                      onClick={handleShowPassword}
-                    >
-                      {showPassword ? "Hide" : "Show"}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-              <Button
-                isLoading={requestStatus === "pending"}
-                loadingText="Signing In"
-                variant="bluePrimary"
-                textAlign="center"
-                borderWidth="1px"
-                borderRadius="md"
-                my={4}
-                overflow="hidden"
-                shadow="md"
-                type="submit"
-                onClick={() =>
-                  handleSignIn({
-                    email: "eve.holt@reqres.in",
-                    password: "pistol",
-                  })
-                }
-              >
-                Sign In
-              </Button>
-            </Stack>
-          </form>
+          <Formik
+            initialValues={{
+              email: "",
+              password: "",
+            }}
+            validationSchema={SignInSchema}
+            onSubmit={values => {
+              handleSignIn(values);
+            }}
+          >
+            {() => (
+              <Form>
+                <Stack spacing={4}>
+                  <Field name="email" type="email" label="Email">
+                    {({
+                      field,
+                      form,
+                    }: {
+                      field: FieldInputProps<string>;
+                      form: FormikProps<{ email: string }>;
+                    }) => (
+                      <FormControl
+                        isInvalid={!!form.errors.email && form.touched.email}
+                      >
+                        <InputGroup size="md">
+                          <InputLeftElement
+                            children={<ReactIcons.Email color="gray.300" />}
+                            pointerEvents="none"
+                          />
+                          <Input
+                            {...field}
+                            autoComplete="email"
+                            placeholder="Email address"
+                            type="email"
+                          />
+                        </InputGroup>
+                        <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field name="password" type="password" label="Password">
+                    {({
+                      field,
+                      form,
+                    }: {
+                      field: FieldInputProps<string>;
+                      form: FormikProps<{ password: string }>;
+                    }) => (
+                      <FormControl
+                        isInvalid={
+                          !!form.errors.password && !!form.touched.password
+                        }
+                      >
+                        <InputGroup size="md">
+                          <InputLeftElement
+                            children={<ReactIcons.Password color="gray.300" />}
+                            pointerEvents="none"
+                          />
+                          <Input
+                            {...field}
+                            pr="4.5rem"
+                            type={showPassword ? "text" : "password"}
+                            autoComplete="current-password"
+                            placeholder="Enter password"
+                            name="password"
+                          />
+                          <InputRightElement width="4.5rem">
+                            <Button
+                              h="1.75rem"
+                              colorScheme="teal"
+                              variant="outline"
+                              size="sm"
+                              onClick={handleShowPassword}
+                            >
+                              {showPassword ? "Hide" : "Show"}
+                            </Button>
+                          </InputRightElement>
+                        </InputGroup>
+                        <FormErrorMessage>
+                          {form.errors.password}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Button
+                    isLoading={requestStatus === "pending"}
+                    loadingText="Signing In"
+                    variant="bluePrimary"
+                    textAlign="center"
+                    borderWidth="1px"
+                    borderRadius="md"
+                    my={4}
+                    overflow="hidden"
+                    shadow="md"
+                    type="submit"
+                  >
+                    Sign In
+                  </Button>
+                </Stack>
+              </Form>
+            )}
+          </Formik>
         </Stack>
       </Stack>
       <Flex justifyContent="end">

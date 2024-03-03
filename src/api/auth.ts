@@ -21,11 +21,10 @@ export const signInApi = async (
 
 export const signUpApi = async (
   user: UserSignUpInput,
-): Promise<UserSignUpResponse | Error> => {
+): Promise<UserSignUpResponse> => {
   try {
     const response = await axios.post<UserSignUpResponse>(`/register`, user);
     // Handle successful response here
-    console.log(response.data);
     return response.data;
   } catch (error) {
     // Handle error here
