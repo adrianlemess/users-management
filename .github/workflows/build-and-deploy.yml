@@ -116,7 +116,6 @@ jobs:
       - name: Comment PR
         run: |
           commitMessage=$(git log --format=%B -n 1 ${{ github.sha }})
-          commitLink=$(git log --format=%H -n 1 ${{ github.sha }})
           echo "DEPLOY_URL=${{ env.DEPLOY_URL }}" >> $GITHUB_ENV
           echo "
           | Environment | URL |
@@ -124,7 +123,6 @@ jobs:
             | 🚀 Preview URL | ${{ env.DEPLOY_URL }} |
             | 🔥 Production URL | ${{ secrets.PRODUCTION_URL }} |
             | 📌 Last Commit Deployed | $commitMessage |
-            | 🔗 Commit Link | [Commit Link]($commitLink) |
           " > comment.txt
           gh pr comment ${{ github.event.pull_request.number }} --body-file comment.txt
         env:
