@@ -1,7 +1,7 @@
 import axios from "axios";
 import { redirect } from "react-router-dom";
 
-import { BASE_URL, DELAY_REQUESTS } from "@/constants";
+import { BASE_URL, DELAY_REQUESTS } from "@/constants/environment";
 
 const defaultOptions = {
   baseURL: BASE_URL,

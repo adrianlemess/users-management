@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { Field, FieldInputProps, Form, Formik, FormikProps } from "formik";
 import { useEffect, useState } from "react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 
 import Logo from "@/assets/logo.png";
 import { ReactIcons } from "@/components/Icons/Icons";
@@ -25,6 +25,7 @@ import { SignInSchema } from "@/utils";
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const toast = useToast();
+  const navigate = useNavigate();
 
   // @TODO handle error
   const { requestStatus, error, handleSignIn } = useSignIn();
@@ -43,7 +44,11 @@ export default function SignIn() {
         isClosable: true,
       });
     }
-  }, [error, requestStatus]);
+
+    if (requestStatus === "resolved") {
+      navigate("/dashboard");
+    }
+  }, [error, requestStatus, navigate, toast]);
 
   return (
     <Box maxW="sm">

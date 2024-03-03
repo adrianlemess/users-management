@@ -7,7 +7,7 @@ import "@testing-library/jest-dom";
 // Mock constant to avoid import.meta error: https://stackoverflow.com/a/74882007
 
 // example.test.(js|ts)
-jest.mock("@/constants", () => ({
+jest.mock("@/constants/environment", () => ({
   BASE_URL: "/api",
   DELAY_REQUESTS: 0,
 }));

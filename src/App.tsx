@@ -11,10 +11,17 @@ import Dashboard from "@/pages/Dashboard/Dashboard";
 import SignIn from "@/pages/SignIn/SignIn";
 import SignUp from "@/pages/SignUp/SignUp";
 
-// @TODO refactor with user logic
-const getUser = () => {
-  // get user from localStorage
-  return localStorage.getItem("user") || false;
+import { USER_SESSION_KEY } from "./constants";
+import { UserSignResponse } from "./types";
+
+const getUser = (): string => {
+  if (localStorage.getItem(USER_SESSION_KEY)) {
+    const user = JSON.parse(
+      localStorage.getItem(USER_SESSION_KEY) || "",
+    ) as UserSignResponse;
+    return user.first_name || user.email || "";
+  }
+  return "";
 };
 
 const router = createBrowserRouter([
@@ -27,7 +34,14 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <Dashboard msg="Hello Adrian" />,
+            element: <Dashboard msg={`Hello ${getUser()}`} />,
+            loader: async () => {
+              const user = getUser();
+              if (!user) {
+                return redirect("/signin");
+              }
+              return null;
+            },
           },
         ],
       },

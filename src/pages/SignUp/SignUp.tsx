@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { Field, FieldInputProps, Form, Formik, FormikProps } from "formik";
 import { useEffect, useState } from "react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 
 import Logo from "@/assets/logo.png";
 import { ReactIcons } from "@/components/Icons/Icons";
@@ -27,6 +27,7 @@ type ShowPasswordType = "password" | "confirmation_password";
 export default function SignUp() {
   const toast = useToast();
   const { requestStatus, error, handleSignUp } = useSignUp();
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState<
     Record<ShowPasswordType, boolean>
@@ -46,7 +47,10 @@ export default function SignUp() {
         isClosable: true,
       });
     }
-  }, [error, requestStatus]);
+    if (requestStatus === "resolved") {
+      navigate("/dashboard");
+    }
+  }, [error, requestStatus, navigate, toast]);
 
   const handleShowPassword = (type: ShowPasswordType) => {
     setShowPassword({

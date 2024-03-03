@@ -1,26 +1,20 @@
-import {
-  UserSignInInput,
-  UserSignInResponse,
-  UserSignUpInput,
-  UserSignUpResponse,
-} from "@/types";
+import { AxiosError } from "axios";
+
+import { UserSignInInput, UserSignResponse, UserSignUpInput } from "@/types";
 
 import axios from "./axios";
-import { AxiosError } from "axios";
 
 export const signInApi = async (
   user: UserSignInInput,
-): Promise<UserSignInResponse> => {
+): Promise<UserSignResponse> => {
   try {
-    const response = await axios.post<UserSignInResponse>(`/login`, user);
+    const response = await axios.post<{ token: string }>(`/login`, user);
 
-    return response.data;
+    return { ...response.data, email: user.email };
   } catch (error) {
     const errorResponse = error as AxiosError<{
       error: string;
     }>;
-
-    console.log({ errorResponse });
 
     if (
       errorResponse?.response?.data?.error &&
@@ -40,11 +34,18 @@ export const signInApi = async (
 
 export const signUpApi = async (
   user: UserSignUpInput,
-): Promise<UserSignUpResponse> => {
+): Promise<UserSignResponse> => {
   try {
-    const response = await axios.post<UserSignUpResponse>(`/register`, user);
+    const response = await axios.post<{ token: string; id: number }>(
+      `/register`,
+      user,
+    );
     // Handle successful response here
-    return response.data;
+    return {
+      ...response.data,
+      first_name: user.first_name,
+      last_name: user.last_name,
+    };
   } catch (error) {
     const errorResponse = error as AxiosError<{
       error: string;

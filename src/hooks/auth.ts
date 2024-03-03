@@ -1,19 +1,15 @@
 import { signInApi, signUpApi } from "@/api";
-import {
-  UserSignInInput,
-  UserSignInResponse,
-  UserSignUpInput,
-  UserSignUpResponse,
-} from "@/types";
+import { USER_SESSION_KEY } from "@/constants";
+import { UserSignInInput, UserSignResponse, UserSignUpInput } from "@/types";
 
 import useHttpRequest from "./http-request";
 
 export const useSignIn = () => {
   const { response, error, requestStatus, makeRequest } =
-    useHttpRequest<UserSignInResponse>();
+    useHttpRequest<UserSignResponse>();
 
-  if (response && response.token) {
-    localStorage.setItem("token", response.token);
+  if (response) {
+    localStorage.setItem(USER_SESSION_KEY, JSON.stringify(response));
   }
 
   const handleSignIn = (userSignIn: UserSignInInput) => {
@@ -25,10 +21,10 @@ export const useSignIn = () => {
 
 export const useSignUp = () => {
   const { response, error, requestStatus, makeRequest } =
-    useHttpRequest<UserSignUpResponse>();
+    useHttpRequest<UserSignResponse>();
 
-  if (response && response.token) {
-    localStorage.setItem("token", response.token);
+  if (response) {
+    localStorage.setItem(USER_SESSION_KEY, JSON.stringify(response));
   }
 
   const handleSignUp = (userSignUp: UserSignUpInput) => {

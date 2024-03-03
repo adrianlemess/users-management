@@ -12,12 +12,12 @@ export type UserSignInInput = {
   password: string;
 };
 
-export type UserSignInResponse = {
+export type UserSignResponse = {
+  id?: number;
   token: string;
-};
-
-export type UserSignUpResponse = UserSignInResponse & {
-  id: number;
+  email?: string;
+  first_name?: string;
+  last_name?: string;
 };
 
 // Since the API doesn't return the password in the Get User endpoints, we will not include it in the User type
