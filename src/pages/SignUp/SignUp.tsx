@@ -28,6 +28,9 @@ export default function SignUp() {
   const toast = useToast();
   const { requestStatus, error, handleSignUp } = useSignUp();
   const navigate = useNavigate();
+  const [userSignUp, setUserSignUp] = useState<Record<string, string> | null>(
+    null,
+  );
 
   const [showPassword, setShowPassword] = useState<
     Record<ShowPasswordType, boolean>
@@ -48,7 +51,9 @@ export default function SignUp() {
       });
     }
     if (requestStatus === "resolved") {
-      navigate("/dashboard");
+      navigate("/dashboard", {
+        state: userSignUp,
+      });
     }
   }, [error, requestStatus, navigate, toast]);
 
@@ -84,8 +89,9 @@ export default function SignUp() {
             onSubmit={values => {
               // Delete the confirmation_password field before sending the data to the API
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              const { confirmation_password, ...userSignup } = values;
-              handleSignUp(userSignup);
+              const { confirmation_password, ...userSignUpInput } = values;
+              setUserSignUp(userSignUpInput);
+              handleSignUp(userSignUpInput);
             }}
           >
             {() => (

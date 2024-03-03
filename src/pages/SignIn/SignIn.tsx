@@ -21,6 +21,7 @@ import Logo from "@/assets/logo.png";
 import { ReactIcons } from "@/components/Icons/Icons";
 import { useSignIn } from "@/hooks";
 import { SignInSchema } from "@/utils";
+import { UserSignInInput } from "@/types";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,6 +30,8 @@ export default function SignIn() {
 
   // @TODO handle error
   const { requestStatus, error, handleSignIn } = useSignIn();
+  const [userSignIn, setUserSignIn] = useState<UserSignInInput | null>(null);
+
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -46,7 +49,9 @@ export default function SignIn() {
     }
 
     if (requestStatus === "resolved") {
-      navigate("/dashboard");
+      navigate("/dashboard", {
+        state: userSignIn,
+      });
     }
   }, [error, requestStatus, navigate, toast]);
 
@@ -70,6 +75,7 @@ export default function SignIn() {
             }}
             validationSchema={SignInSchema}
             onSubmit={values => {
+              setUserSignIn(values);
               handleSignIn(values);
             }}
           >

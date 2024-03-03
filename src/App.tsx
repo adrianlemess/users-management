@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <Dashboard msg={`Hello ${getUser()}`} />,
+            element: <Dashboard />,
             loader: async () => {
               const user = getUser();
               if (!user) {
