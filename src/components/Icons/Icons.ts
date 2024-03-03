@@ -1,8 +1,16 @@
 import { chakra } from "@chakra-ui/react";
-import { FaEnvelope, FaLock, FaUser } from "react-icons/fa6";
+import {
+  MdEmail,
+  MdNightsStay,
+  MdOutlineWbSunny,
+  MdPassword,
+  MdPerson,
+} from "react-icons/md";
 
 export const ReactIcons = {
-  User: chakra(FaUser),
-  Password: chakra(FaLock),
-  Email: chakra(FaEnvelope),
+  User: chakra(MdPerson),
+  Password: chakra(MdPassword),
+  Email: chakra(MdEmail),
+  Sun: chakra(MdOutlineWbSunny),
+  Moon: chakra(MdNightsStay),
 };

@@ -11,13 +11,14 @@ import {
   InputRightElement,
   Link,
   Stack,
+  useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
 import { Field, FieldInputProps, Form, Formik, FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 
-import Logo from "@/assets/logo.png";
+import Logo from "@/assets/logo.svg";
 import { ReactIcons } from "@/components/Icons/Icons";
 import { useSignUp } from "@/hooks";
 import { SignUpSchema } from "@/utils";
@@ -31,6 +32,13 @@ export default function SignUp() {
   const [userSignUp, setUserSignUp] = useState<Record<string, string> | null>(
     null,
   );
+
+  const COLORS = {
+    bg: useColorModeValue("white", "gray.600"),
+    color: useColorModeValue("gray.700", "gray.200"),
+    link: useColorModeValue("blue.500", "blue.300"),
+    icon: useColorModeValue("gray.500", "gray.300"),
+  };
 
   const [showPassword, setShowPassword] = useState<
     Record<ShowPasswordType, boolean>
@@ -69,7 +77,8 @@ export default function SignUp() {
       <Stack mb={4}>
         <Stack
           spacing={4}
-          bgColor="white"
+          bg={COLORS.bg}
+          color={COLORS.color}
           p={4}
           borderWidth="1px"
           borderRadius="lg"
@@ -117,7 +126,7 @@ export default function SignUp() {
                       >
                         <InputGroup size="md">
                           <InputLeftElement
-                            children={<ReactIcons.User color="gray.300" />}
+                            children={<ReactIcons.User color={COLORS.icon} />}
                             pointerEvents="none"
                           />
                           <Input {...field} placeholder="First Name" />
@@ -148,7 +157,7 @@ export default function SignUp() {
                       >
                         <InputGroup size="md">
                           <InputLeftElement
-                            children={<ReactIcons.User color="gray.300" />}
+                            children={<ReactIcons.User color={COLORS.icon} />}
                             pointerEvents="none"
                           />
                           <Input {...field} placeholder="Last Name" />
@@ -177,7 +186,7 @@ export default function SignUp() {
                       >
                         <InputGroup size="md">
                           <InputLeftElement
-                            children={<ReactIcons.Email color="gray.300" />}
+                            children={<ReactIcons.Email color={COLORS.icon} />}
                             pointerEvents="none"
                           />
                           <Input {...field} placeholder="Email address" />
@@ -205,7 +214,9 @@ export default function SignUp() {
                       >
                         <InputGroup size="md">
                           <InputLeftElement
-                            children={<ReactIcons.Password color="gray.300" />}
+                            children={
+                              <ReactIcons.Password color={COLORS.icon} />
+                            }
                             pointerEvents="none"
                           />
                           <Input
@@ -252,7 +263,9 @@ export default function SignUp() {
                       >
                         <InputGroup size="md">
                           <InputLeftElement
-                            children={<ReactIcons.Password color="gray.300" />}
+                            children={
+                              <ReactIcons.Password color={COLORS.icon} />
+                            }
                             pointerEvents="none"
                           />
                           <Input
@@ -309,7 +322,7 @@ export default function SignUp() {
       </Stack>
       <Flex justifyContent="end">
         Already have an account?{" "}
-        <Link color="teal.500" as={ReactRouterLink} to="/signin" ml={2}>
+        <Link color={COLORS.link} as={ReactRouterLink} to="/signin" ml={2}>
           Sign In
         </Link>
       </Flex>

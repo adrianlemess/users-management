@@ -1,6 +1,8 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, useColorModeValue } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { Outlet, useLocation } from "react-router-dom";
+
+import { RootLayout } from "../RootLayout/RootLayout";
 
 const AnimatedBaseLayout = () => {
   const { pathname } = useLocation();
@@ -9,23 +11,28 @@ const AnimatedBaseLayout = () => {
     animate: { opacity: 1, transition: { ease: "easeIn", duration: 1 } },
     exit: { opacity: 0, transition: { ease: "easeOut", duration: 0.5 } },
   };
+
+  const bg = useColorModeValue("gray.200", "gray.800");
+
   return (
     <Flex
       flexDirection="column"
       width="100wh"
       height="100vh"
-      backgroundColor="gray.200"
+      backgroundColor={bg}
       justifyContent="center"
       alignItems="center"
     >
-      <motion.div
-        key={pathname}
-        animate="animate"
-        initial={"initial"}
-        variants={pageMotion}
-      >
-        <Outlet />
-      </motion.div>
+      <RootLayout>
+        <motion.div
+          key={pathname}
+          animate="animate"
+          initial={"initial"}
+          variants={pageMotion}
+        >
+          <Outlet />
+        </motion.div>
+      </RootLayout>
     </Flex>
   );
 };

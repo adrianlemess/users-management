@@ -11,13 +11,14 @@ import {
   InputRightElement,
   Link,
   Stack,
+  useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
 import { Field, FieldInputProps, Form, Formik, FormikProps } from "formik";
 import { useEffect, useState } from "react";
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 
-import Logo from "@/assets/logo.png";
+import Logo from "@/assets/logo.svg";
 import { ReactIcons } from "@/components/Icons/Icons";
 import { useSignIn } from "@/hooks";
 import { UserSignInInput } from "@/types";
@@ -28,9 +29,15 @@ export default function SignIn() {
   const toast = useToast();
   const navigate = useNavigate();
 
-  // @TODO handle error
   const { requestStatus, error, handleSignIn } = useSignIn();
   const [userSignIn, setUserSignIn] = useState<UserSignInInput | null>(null);
+
+  const COLORS = {
+    bg: useColorModeValue("white", "gray.600"),
+    color: useColorModeValue("gray.700", "gray.200"),
+    link: useColorModeValue("blue.500", "blue.300"),
+    icon: useColorModeValue("gray.500", "gray.300"),
+  };
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -60,11 +67,12 @@ export default function SignIn() {
       <Stack mb={4}>
         <Stack
           spacing={4}
-          bgColor="white"
           p={4}
           borderWidth="1px"
           borderRadius="lg"
           overflow="hidden"
+          bg={COLORS.bg}
+          color={COLORS.color}
           shadow="md"
         >
           <Image src={Logo} marginY={10} mx={5} alt="1Global Logo" />
@@ -95,7 +103,7 @@ export default function SignIn() {
                       >
                         <InputGroup size="md">
                           <InputLeftElement
-                            children={<ReactIcons.Email color="gray.300" />}
+                            children={<ReactIcons.Email color={COLORS.icon} />}
                             pointerEvents="none"
                           />
                           <Input
@@ -124,7 +132,9 @@ export default function SignIn() {
                       >
                         <InputGroup size="md">
                           <InputLeftElement
-                            children={<ReactIcons.Password color="gray.300" />}
+                            children={
+                              <ReactIcons.Password color={COLORS.icon} />
+                            }
                             pointerEvents="none"
                           />
                           <Input
@@ -175,7 +185,7 @@ export default function SignIn() {
       </Stack>
       <Flex justifyContent="end">
         New to us?{" "}
-        <Link color="teal.500" as={ReactRouterLink} to="/signup" ml={2}>
+        <Link color={COLORS.link} as={ReactRouterLink} to="/signup" ml={2}>
           Sign Up
         </Link>
       </Flex>
