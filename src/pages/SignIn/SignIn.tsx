@@ -11,9 +11,10 @@ import {
   InputRightElement,
   Link,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
 import { Field, FieldInputProps, Form, Formik, FormikProps } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link as ReactRouterLink } from "react-router-dom";
 
 import Logo from "@/assets/logo.png";
@@ -23,12 +24,26 @@ import { SignInSchema } from "@/utils";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
+  const toast = useToast();
 
   // @TODO handle error
-  const { requestStatus, handleSignIn } = useSignIn();
+  const { requestStatus, error, handleSignIn } = useSignIn();
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
+  useEffect(() => {
+    if (requestStatus === "rejected") {
+      toast({
+        title: "An error occurred.",
+        description: error?.message || "Unable to sign in. Please try again.",
+        status: "error",
+        duration: 5000,
+        position: "top",
+        isClosable: true,
+      });
+    }
+  }, [error, requestStatus]);
 
   return (
     <Box maxW="sm">

@@ -11,9 +11,10 @@ import {
   InputRightElement,
   Link,
   Stack,
+  useToast,
 } from "@chakra-ui/react";
 import { Field, FieldInputProps, Form, Formik, FormikProps } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link as ReactRouterLink } from "react-router-dom";
 
 import Logo from "@/assets/logo.png";
@@ -24,6 +25,9 @@ import { SignUpSchema } from "@/utils";
 type ShowPasswordType = "password" | "confirmation_password";
 
 export default function SignUp() {
+  const toast = useToast();
+  const { requestStatus, error, handleSignUp } = useSignUp();
+
   const [showPassword, setShowPassword] = useState<
     Record<ShowPasswordType, boolean>
   >({
@@ -31,7 +35,18 @@ export default function SignUp() {
     confirmation_password: false,
   });
 
-  const { requestStatus, handleSignUp } = useSignUp();
+  useEffect(() => {
+    if (requestStatus === "rejected") {
+      toast({
+        title: "An error occurred.",
+        description: error?.message || "Unable to sign up. Please try again.",
+        status: "error",
+        duration: 5000,
+        position: "top",
+        isClosable: true,
+      });
+    }
+  }, [error, requestStatus]);
 
   const handleShowPassword = (type: ShowPasswordType) => {
     setShowPassword({
