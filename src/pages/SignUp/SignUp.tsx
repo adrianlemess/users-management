@@ -37,7 +37,7 @@ export default function SignUp() {
     bg: useColorModeValue("white", "gray.600"),
     color: useColorModeValue("gray.700", "gray.200"),
     link: useColorModeValue("blue.500", "blue.300"),
-    icon: useColorModeValue("gray.300", "gray.500"),
+    icon: useColorModeValue("gray.500", "gray.300"),
   };
 
   const [showPassword, setShowPassword] = useState<
