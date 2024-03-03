@@ -2,8 +2,8 @@ import axios from "axios";
 import { redirect } from "react-router-dom";
 
 const defaultOptions = {
-  baseURL: import.meta.env.VITE_API_URL,
-  delay: import.meta.env.VITE_DELAY_REQUESTS,
+  baseURL: import.meta?.env?.VITE_API_URL || "",
+  delay: import.meta?.env?.VITE_DELAY_REQUESTS || 0,
 };
 
 // Create instance
