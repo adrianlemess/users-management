@@ -1,4 +1,4 @@
-import { defineStyleConfig, extendTheme } from "@chakra-ui/react";
+import { defineStyleConfig, extendTheme, ThemeConfig } from "@chakra-ui/react";
 
 const colorsTheme = {
   gray: {
@@ -7,6 +7,11 @@ const colorsTheme = {
   blue: {
     800: "#111A31",
     600: "#243a71",
+  },
+  _dark: {
+    gray: {
+      200: "#2C2C2C",
+    },
   },
 };
 
@@ -18,11 +23,23 @@ const buttonTheme = defineStyleConfig({
       _hover: {
         bg: "blue.600",
       },
+      _dark: {
+        bg: "blue.600",
+        _hover: {
+          bg: "blue.800",
+        },
+      },
     },
   },
 });
 
+const config: ThemeConfig = {
+  initialColorMode: "dark",
+  useSystemColorMode: true,
+};
+
 export const CustomTheme = extendTheme({
+  config,
   components: { Button: buttonTheme },
   colors: colorsTheme,
 });
