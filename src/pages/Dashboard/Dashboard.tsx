@@ -1,6 +1,7 @@
-import { USER_SESSION_KEY } from "@/constants";
 import { Box, Heading } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
+
+import { USER_SESSION_KEY } from "@/constants";
 
 export default function Dashboard() {
   const { state } = useLocation();

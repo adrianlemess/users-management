@@ -20,8 +20,8 @@ import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import Logo from "@/assets/logo.png";
 import { ReactIcons } from "@/components/Icons/Icons";
 import { useSignIn } from "@/hooks";
-import { SignInSchema } from "@/utils";
 import { UserSignInInput } from "@/types";
+import { SignInSchema } from "@/utils";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -53,7 +53,7 @@ export default function SignIn() {
         state: userSignIn,
       });
     }
-  }, [error, requestStatus, navigate, toast]);
+  }, [error, requestStatus, navigate, toast, userSignIn]);
 
   return (
     <Box maxW="sm">

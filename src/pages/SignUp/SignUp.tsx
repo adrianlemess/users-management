@@ -55,7 +55,7 @@ export default function SignUp() {
         state: userSignUp,
       });
     }
-  }, [error, requestStatus, navigate, toast]);
+  }, [error, requestStatus, navigate, toast, userSignUp]);
 
   const handleShowPassword = (type: ShowPasswordType) => {
     setShowPassword({
