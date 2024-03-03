@@ -4,10 +4,11 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import BaseLayout from "./components/Layout/BaseLayout/BaseLayout";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import SignIn from "./pages/SignIn/SignIn";
-import SignUp from "./pages/SignUp/SignUp";
+import AnimatedBaseLayout from "@/components/Layout/AnimatedBaseLayout/AnimatedBaseLayout";
+import BaseLayout from "@/components/Layout/BaseLayout/BaseLayout";
+import Dashboard from "@/pages/Dashboard/Dashboard";
+import SignIn from "@/pages/SignIn/SignIn";
+import SignUp from "@/pages/SignUp/SignUp";
 
 // @TODO refactor with user logic
 const getUser = () => {
@@ -26,13 +27,26 @@ const router = createBrowserRouter([
       },
     ],
   },
+
   {
     path: "signin",
-    element: <SignIn />,
+    element: <AnimatedBaseLayout />,
+    children: [
+      {
+        element: <SignIn />,
+        index: true,
+      },
+    ],
   },
   {
     path: "signup",
-    element: <SignUp />,
+    element: <AnimatedBaseLayout />,
+    children: [
+      {
+        element: <SignUp />,
+        index: true,
+      },
+    ],
   },
   {
     path: "/",
