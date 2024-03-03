@@ -9,5 +9,4 @@ import "@testing-library/jest-dom";
 // example.test.(js|ts)
 jest.mock("@/constants/environment", () => ({
   BASE_URL: "/api",
-  DELAY_REQUESTS: 0,
 }));

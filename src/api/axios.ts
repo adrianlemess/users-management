@@ -1,7 +1,8 @@
 import axios from "axios";
 import { redirect } from "react-router-dom";
 
-import { BASE_URL, DELAY_REQUESTS } from "@/constants/environment";
+import { USER_SESSION_KEY } from "@/constants";
+import { BASE_URL } from "@/constants/environment";
 
 const defaultOptions = {
   baseURL: BASE_URL,
@@ -15,21 +16,12 @@ const axiosClient = axios.create(defaultOptions);
 
 // Set the AUTH token for any request
 axiosClient.interceptors.request.use(function (config) {
-  // Add delay to requests if DELAY_REQUESTS is set (for testing purposes)
-  // @TODO remove this in production
-
-  if (DELAY_REQUESTS) {
-    // update url with delay parameter
-    const url = new URL(`${defaultOptions.baseURL}${config.url}` || "");
-
-    url.searchParams.set("delay", `${DELAY_REQUESTS}`);
-    config.url = url.toString();
-  }
   // Skip if is /login or /register
   if (config.url?.includes("/login") || config.url?.includes("/register")) {
     return config;
   }
-  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem(USER_SESSION_KEY) || "{}");
+  const token = user?.token || null;
 
   // if token is not in local storage redirect to /signup using react-router-dom
   if (!token) {
