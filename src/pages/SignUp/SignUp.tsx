@@ -17,14 +17,14 @@ import { Link as ReactRouterLink } from "react-router-dom";
 import Logo from "@/assets/logo.png";
 import { ReactIcons } from "@/components/Icons/Icons";
 
-type ShowPasswordType = "password" | "retypePassword";
+type ShowPasswordType = "password" | "confirmationPassword";
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState<
     Record<ShowPasswordType, boolean>
   >({
     password: false,
-    retypePassword: false,
+    confirmationPassword: false,
   });
 
   const [loading, setLoading] = useState(false);
@@ -55,98 +55,121 @@ export default function SignUp() {
           overflow="hidden"
           shadow="md"
         >
-          <Image
-            src={Logo}
-            marginY={10}
-            mx={5}
-            alt="1Global Logo"
-            loading="lazy"
-          />
-          <FormControl>
-            <InputGroup size="md">
-              <InputLeftElement
-                children={<ReactIcons.User color="gray.300" />}
-                pointerEvents="none"
-              />
-              <Input placeholder="Name" type="text" />
-            </InputGroup>
-          </FormControl>
-          <FormControl>
-            <InputGroup size="md">
-              <InputLeftElement
-                children={<ReactIcons.User color="gray.300" />}
-                pointerEvents="none"
-              />
-              <Input placeholder="Last Name" type="text" />
-            </InputGroup>
-          </FormControl>
-          <FormControl>
-            <InputGroup size="md">
-              <InputLeftElement
-                children={<ReactIcons.Email color="gray.300" />}
-                pointerEvents="none"
-              />
-              <Input placeholder="Email address" type="email" />
-            </InputGroup>
-          </FormControl>
-          <FormControl>
-            <InputGroup size="md">
-              <InputLeftElement
-                children={<ReactIcons.Password color="gray.300" />}
-                pointerEvents="none"
-              />
-              <Input
-                pr="4.5rem"
-                type={showPassword.password ? "text" : "password"}
-                placeholder="Enter password"
-              />
-              <InputRightElement width="4.5rem">
-                <Button
-                  h="1.75rem"
-                  size="sm"
-                  onClick={() => handleShowPassword("password")}
-                >
-                  {showPassword.password ? "Hide" : "Show"}
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-          </FormControl>
-          <FormControl>
-            <InputGroup size="md">
-              <InputLeftElement
-                children={<ReactIcons.Password color="gray.300" />}
-                pointerEvents="none"
-              />
-              <Input
-                pr="4.5rem"
-                type={showPassword.retypePassword ? "text" : "password"}
-                placeholder="Retype password"
-              />
-              <InputRightElement width="4.5rem">
-                <Button
-                  h="1.75rem"
-                  size="sm"
-                  onClick={() => handleShowPassword("retypePassword")}
-                >
-                  {showPassword.retypePassword ? "Hide" : "Show"}
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-          </FormControl>
-          <Button
-            isLoading={loading}
-            loadingText="Signing Up"
-            variant="bluePrimary"
-            textAlign="center"
-            borderWidth="1px"
-            borderRadius="md"
-            my={4}
-            overflow="hidden"
-            shadow="md"
-            onClick={handleSignUp}
-          >
-            Sign Up
-          </Button>
+          <Image src={Logo} marginY={10} mx={5} alt="1Global Logo" />
+          <form>
+            <Stack spacing={4}>
+              <FormControl>
+                <InputGroup size="md">
+                  <InputLeftElement
+                    children={<ReactIcons.User color="gray.300" />}
+                    pointerEvents="none"
+                  />
+                  <Input
+                    autoComplete="given-name"
+                    placeholder="Name"
+                    name="first-name"
+                    type="text"
+                  />
+                </InputGroup>
+              </FormControl>
+              <FormControl>
+                <InputGroup size="md">
+                  <InputLeftElement
+                    children={<ReactIcons.User color="gray.300" />}
+                    pointerEvents="none"
+                  />
+                  <Input
+                    autoComplete="last-name"
+                    placeholder="Last Name"
+                    type="text"
+                    name="last-name"
+                  />
+                </InputGroup>
+              </FormControl>
+              <FormControl>
+                <InputGroup size="md">
+                  <InputLeftElement
+                    children={<ReactIcons.Email color="gray.300" />}
+                    pointerEvents="none"
+                  />
+                  <Input
+                    autoComplete="email"
+                    placeholder="Email address"
+                    type="email"
+                    name="email"
+                  />
+                </InputGroup>
+              </FormControl>
+              <FormControl>
+                <InputGroup size="md">
+                  <InputLeftElement
+                    children={<ReactIcons.Password color="gray.300" />}
+                    pointerEvents="none"
+                  />
+                  <Input
+                    pr="4.5rem"
+                    autoComplete="new-password"
+                    type={showPassword.password ? "text" : "password"}
+                    placeholder="Enter password"
+                    name="password"
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button
+                      h="1.75rem"
+                      size="sm"
+                      colorScheme="teal"
+                      variant="outline"
+                      onClick={() => handleShowPassword("password")}
+                    >
+                      {showPassword.password ? "Hide" : "Show"}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+              <FormControl>
+                <InputGroup size="md">
+                  <InputLeftElement
+                    children={<ReactIcons.Password color="gray.300" />}
+                    pointerEvents="none"
+                  />
+                  <Input
+                    pr="4.5rem"
+                    autoComplete="new-password"
+                    name="confirmation-password"
+                    type={
+                      showPassword.confirmationPassword ? "text" : "password"
+                    }
+                    placeholder="Retype password"
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button
+                      h="1.75rem"
+                      size="sm"
+                      colorScheme="teal"
+                      variant="outline"
+                      onClick={() => handleShowPassword("confirmationPassword")}
+                    >
+                      {showPassword.confirmationPassword ? "Hide" : "Show"}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+              <Button
+                isLoading={loading}
+                loadingText="Signing Up"
+                variant="bluePrimary"
+                textAlign="center"
+                borderWidth="1px"
+                borderRadius="md"
+                my={4}
+                overflow="hidden"
+                shadow="md"
+                onClick={handleSignUp}
+              >
+                Sign Up
+              </Button>
+            </Stack>
+          </form>
         </Stack>
       </Stack>
       <Flex justifyContent="end">
