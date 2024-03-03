@@ -34,7 +34,7 @@ const buttonTheme = defineStyleConfig({
 });
 
 const config: ThemeConfig = {
-  initialColorMode: "dark",
+  initialColorMode: "system",
   useSystemColorMode: true,
 };
 
