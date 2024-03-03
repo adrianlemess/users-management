@@ -1,9 +1,13 @@
 import axios from "axios";
 import { redirect } from "react-router-dom";
 
+import { BASE_URL, DELAY_REQUESTS } from "@/constants";
+
 const defaultOptions = {
-  baseURL: import.meta?.env?.VITE_API_URL || "",
-  delay: import.meta?.env?.VITE_DELAY_REQUESTS || 0,
+  baseURL: BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 };
 
 // Create instance
@@ -16,7 +20,7 @@ axiosClient.interceptors.request.use(function (config) {
   // Add delay to requests if DELAY_REQUESTS is set (for testing purposes)
   // @TODO remove this in production
 
-  if (defaultOptions.delay) {
+  if (DELAY_REQUESTS) {
     // update url with delay parameter
     const url = new URL(`${defaultOptions.baseURL}${config.url}` || "");
     console.log({
@@ -24,7 +28,7 @@ axiosClient.interceptors.request.use(function (config) {
       configUrl: config.url,
       baseURL: defaultOptions.baseURL,
     });
-    url.searchParams.set("delay", `${defaultOptions.delay}`);
+    url.searchParams.set("delay", `${DELAY_REQUESTS}`);
     config.url = url.toString();
   }
   // Skip if is /login or /register
