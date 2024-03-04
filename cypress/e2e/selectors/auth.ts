@@ -7,4 +7,5 @@ export const AUTH_SELECTORS = {
   showPasswordButton: '[data-testid="show-password-button"]',
   showConfirmationPasswordButton:
     '[data-testid="show-confirmation-password-button"]',
+  submitButton: 'button[type="submit"]',
 };

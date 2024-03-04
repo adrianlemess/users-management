@@ -7,7 +7,7 @@ describe("SignUp", () => {
   });
 
   it("Should test all fields validation", () => {
-    cy.contains("Sign Up").click();
+    cy.get(AUTH_SELECTORS.submitButton).click();
 
     // Validate required fields
     cy.contains("First Name is required").should("exist");
