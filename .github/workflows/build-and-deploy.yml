@@ -119,10 +119,12 @@ jobs:
         id: set_var
         run: |
           echo "DEPLOY_URL=${{ env.DEPLOY_URL }}" >> $GITHUB_OUTPUT
+
       - name: Comment PR
         run: |
           commitMessage=$(git log --format=%B -n 1 ${{ github.sha }})
           echo "DEPLOY_URL=${{ env.DEPLOY_URL }}" >> $GITHUB_ENV
+          echo "
           | Environment | URL |
           | - | - |
             | 🚀 Preview URL | ${{ env.DEPLOY_URL }} |
