@@ -26,7 +26,7 @@ import { SignUpSchema } from "@/utils";
 
 type ShowPasswordType = "password" | "confirmation_password";
 
-export default function SignUp() {
+export const SignUp = () => {
   const toast = useToast();
   const { userSession, requestStatus, error, handleSignUp } = useSignUp();
   const { setUserSession } = useAuthStore();
@@ -318,4 +318,4 @@ export default function SignUp() {
       </Flex>
     </Box>
   );
-}
+};

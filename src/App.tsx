@@ -4,12 +4,12 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import AnimatedBaseLayout from "@/components/Layout/AnimatedBaseLayout/AnimatedBaseLayout";
-import BaseLayout from "@/components/Layout/BaseLayout/BaseLayout";
+import { AnimatedBaseLayout } from "@/components/Layout/AnimatedBaseLayout/AnimatedBaseLayout";
+import { BaseLayout } from "@/components/Layout/BaseLayout/BaseLayout";
 import { ErrorBoundaryLayout } from "@/components/Layout/ErrorBoundaryLayout/ErrorBoundaryLayout";
-import Dashboard from "@/pages/Dashboard/Dashboard";
-import SignIn from "@/pages/SignIn/SignIn";
-import SignUp from "@/pages/SignUp/SignUp";
+import { Dashboard } from "@/pages/Dashboard/Dashboard";
+import { SignIn } from "@/pages/SignIn/SignIn";
+import { SignUp } from "@/pages/SignUp/SignUp";
 
 import { useAuthStore } from "./state";
 

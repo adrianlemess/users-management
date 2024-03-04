@@ -2,7 +2,7 @@ import { Box, Heading } from "@chakra-ui/react";
 
 import { useAuthStore } from "@/state";
 
-export default function Dashboard() {
+export const Dashboard = () => {
   const userSession = useAuthStore(state => state.userSession);
 
   return (
@@ -12,4 +12,4 @@ export default function Dashboard() {
       </Heading>
     </Box>
   );
-}
+};

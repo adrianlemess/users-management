@@ -5,7 +5,7 @@ import { ThemeToggle } from "@/components/ThemeToggle/ThemeToggle";
 
 import { RootLayout } from "../RootLayout/RootLayout";
 
-const AnimatedBaseLayout = () => {
+export const AnimatedBaseLayout = () => {
   const { pathname } = useLocation();
   const pageMotion = {
     initial: { opacity: 0 },
@@ -27,5 +27,3 @@ const AnimatedBaseLayout = () => {
     </RootLayout>
   );
 };
-
-export default AnimatedBaseLayout;

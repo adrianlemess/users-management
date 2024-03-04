@@ -5,7 +5,7 @@ import { useAuthStore } from "@/state";
 
 import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
 
-const Header = () => {
+export const Header = () => {
   const navigate = useNavigate();
   const { removeUserSession } = useAuthStore();
 
@@ -40,5 +40,3 @@ const Header = () => {
     </Flex>
   );
 };
-
-export default Header;

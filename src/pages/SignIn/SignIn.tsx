@@ -24,7 +24,7 @@ import { useSignIn } from "@/hooks";
 import { useAuthStore } from "@/state";
 import { SignInSchema } from "@/utils";
 
-export default function SignIn() {
+export const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
@@ -190,4 +190,4 @@ export default function SignIn() {
       </Flex>
     </Box>
   );
-}
+};

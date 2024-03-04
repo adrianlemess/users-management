@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 
-import Header from "../../Header/Header";
+import { Header } from "../../Header/Header";
 import { RootLayout } from "../RootLayout/RootLayout";
 
-const BaseLayout = () => {
+export const BaseLayout = () => {
   return (
     <RootLayout>
       <Header />
@@ -14,5 +14,3 @@ const BaseLayout = () => {
     </RootLayout>
   );
 };
-
-export default BaseLayout;
