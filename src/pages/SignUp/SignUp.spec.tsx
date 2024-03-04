@@ -1,12 +1,22 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { http, HttpResponse } from "msw";
 import React from "react";
 
+import { server } from "../../__tests__/msw/server";
 import { TestWrapper } from "../../__tests__/test-providers";
 import { fillInputByPlaceholder } from "../../__tests__/utils";
 import SignUp from "./SignUp";
 
 describe("SignUp", () => {
+  beforeEach(async () => {
+    const toasts = screen.queryAllByRole("listitem");
+    await Promise.all(
+      toasts.map(toasts =>
+        waitFor(() => expect(toasts).not.toBeInTheDocument()),
+      ),
+    );
+  });
   it("Should render a sign up form", () => {
     render(<SignUp />, { wrapper: TestWrapper });
 
@@ -15,7 +25,7 @@ describe("SignUp", () => {
     const emailInput = screen.getByPlaceholderText("Email address");
     const passwordInput = screen.getByPlaceholderText("Enter password");
     const confirmPasswordInput = screen.getByPlaceholderText(
-      "Confirmation password",
+      "Enter confirmation password",
     );
     const signUpButton = screen.getByText("Sign Up");
 
@@ -73,7 +83,7 @@ describe("SignUp", () => {
     await userEvent.click(signUpButton);
 
     fillInputByPlaceholder("Enter password", "password123");
-    fillInputByPlaceholder("Confirmation password", "password1234");
+    fillInputByPlaceholder("Enter confirmation password", "password1234");
 
     const confirmPasswordError = await screen.findByText(
       "Passwords must match",
@@ -89,7 +99,7 @@ describe("SignUp", () => {
     await userEvent.click(signUpButton);
 
     fillInputByPlaceholder("Enter password", "Asd123");
-    fillInputByPlaceholder("Confirmation password", "Asd123");
+    fillInputByPlaceholder("Enter confirmation password", "Asd123");
 
     const passwordError = await screen.findByText(
       "Password is too short - should be 8 chars minimum",
@@ -105,7 +115,7 @@ describe("SignUp", () => {
     await userEvent.click(signUpButton);
 
     fillInputByPlaceholder("Enter password", "asd1234567");
-    fillInputByPlaceholder("Confirmation password", "asd1234567");
+    fillInputByPlaceholder("Enter confirmation password", "asd1234567");
 
     const passwordError = await screen.findByText(
       "Password must contain at least one uppercase letter",
@@ -122,12 +132,85 @@ describe("SignUp", () => {
     fillInputByPlaceholder("Last Name", "Doe");
     fillInputByPlaceholder("Email address", "adrianlemess@gmail.com");
     fillInputByPlaceholder("Enter password", "Asd1234567");
-    fillInputByPlaceholder("Confirmation password", "Asd1234567");
+    fillInputByPlaceholder("Enter confirmation password", "Asd1234567");
 
     await userEvent.click(signUpButton);
 
     await waitFor(() => {
       expect(window.location.pathname).toBe("/dashboard");
+    });
+  });
+
+  it("Should display a toast with the error message when the sign up fails", async () => {
+    // Mock error with service worker
+    server.use(
+      http.post("/api/register", () => {
+        return HttpResponse.json(
+          { error: "Note: Only defined users succeed registration" },
+          { status: 400 },
+        );
+      }),
+    );
+
+    render(<SignUp />, { wrapper: TestWrapper });
+
+    fillInputByPlaceholder("First Name", "John");
+    fillInputByPlaceholder("Last Name", "Doe");
+    fillInputByPlaceholder("Email address", "adrianlemess@gmail.com");
+    fillInputByPlaceholder("Enter password", "Asd1234567");
+    fillInputByPlaceholder("Enter confirmation password", "Asd1234567");
+
+    act(() => {
+      const button = screen.getByText("Sign Up");
+      button.click();
+    });
+    const toast = await screen.findByText(
+      "Only defined users succeed registration",
+    );
+    expect(toast).toBeInTheDocument();
+  });
+
+  it('Should show / hide password when "Show / Hide" button is clicked', async () => {
+    render(<SignUp />, { wrapper: TestWrapper });
+
+    const showPasswordButton = screen.getByTestId("show-password-button");
+    const passwordInput = screen.getByPlaceholderText("Enter password");
+
+    // Start as password
+    expect(passwordInput).toHaveAttribute("type", "password");
+
+    await userEvent.click(showPasswordButton);
+    await waitFor(() => {
+      expect(passwordInput).toHaveAttribute("type", "text");
+    });
+
+    await userEvent.click(showPasswordButton);
+    await waitFor(() => {
+      expect(passwordInput).toHaveAttribute("type", "password");
+    });
+  });
+
+  it('Should show / hide confirmation password when "Show / Hide" button is clicked', async () => {
+    render(<SignUp />, { wrapper: TestWrapper });
+
+    const showPasswordButton = screen.getByTestId(
+      "show-confirmation-password-button",
+    );
+    const passwordInput = screen.getByPlaceholderText(
+      "Enter confirmation password",
+    );
+
+    // Start as password
+    expect(passwordInput).toHaveAttribute("type", "password");
+
+    await userEvent.click(showPasswordButton);
+    await waitFor(() => {
+      expect(passwordInput).toHaveAttribute("type", "text");
+    });
+
+    await userEvent.click(showPasswordButton);
+    await waitFor(() => {
+      expect(passwordInput).toHaveAttribute("type", "password");
     });
   });
 });

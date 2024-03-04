@@ -143,9 +143,9 @@ describe("SignIn", () => {
       const button = screen.getByText("Sign In");
       button.click();
     });
-    const toasts = await screen.findByText(
+    const toast = await screen.findByText(
       "User not found, please sign up or try a different email.",
     );
-    expect(toasts).toBeInTheDocument();
+    expect(toast).toBeInTheDocument();
   });
 });

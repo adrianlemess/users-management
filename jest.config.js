@@ -40,6 +40,7 @@ export default {
     "!**/__mocks__/**",
     "!**/node_modules/**",
     "!**/*.d.ts",
+    "!**/constants/environment.ts",
   ],
 
   // Important: order matters, specific rules should be defined first

@@ -230,6 +230,7 @@ export default function SignUp() {
                               h="1.75rem"
                               size="sm"
                               colorScheme="teal"
+                              data-testid="show-password-button"
                               variant="outline"
                               onClick={() => handleShowPassword("password")}
                             >
@@ -276,7 +277,7 @@ export default function SignUp() {
                                 : "password"
                             }
                             pr="4.5rem"
-                            placeholder="Confirmation password"
+                            placeholder="Enter confirmation password"
                           />
                           <InputRightElement width="4.5rem">
                             <Button
@@ -284,6 +285,7 @@ export default function SignUp() {
                               size="sm"
                               colorScheme="teal"
                               variant="outline"
+                              data-testid="show-confirmation-password-button"
                               onClick={() =>
                                 handleShowPassword("confirmation_password")
                               }
