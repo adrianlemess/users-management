@@ -4,9 +4,21 @@
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
 
-// Mock constant to avoid import.meta error: https://stackoverflow.com/a/74882007
+import { server } from "./msw/server";
 
-// example.test.(js|ts)
+// Mock constant to avoid import.meta error: https://stackoverflow.com/a/74882007
 jest.mock("@/constants/environment", () => ({
   BASE_URL: "/api",
 }));
+
+beforeAll(() => {
+  server.listen();
+});
+
+afterEach(() => {
+  server.resetHandlers();
+});
+
+afterAll(() => {
+  server.close();
+});

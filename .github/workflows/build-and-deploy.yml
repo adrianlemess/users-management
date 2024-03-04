@@ -87,6 +87,8 @@ jobs:
     name: Deploy to Preview Vercel
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      DEPLOY_URL: ${{ steps.set_var.outputs.DEPLOY_URL }}
     needs: [inspections, build]
     steps:
       - name: Download build artifacts
@@ -113,6 +115,11 @@ jobs:
               echo "There was an error: $errorMessage"
               exit 1
           fi
+      - name: Set Deployment URL
+        id: set_var
+        run: |
+          echo "DEPLOY_URL=${{ env.DEPLOY_URL }}" >> $GITHUB_OUTPUT
+
       - name: Comment PR
         run: |
           commitMessage=$(git log --format=%B -n 1 ${{ github.sha }})
@@ -126,4 +133,32 @@ jobs:
           " > comment.txt
           gh pr comment ${{ github.event.pull_request.number }} --body-file comment.txt
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  cypress:
+    name: Run Cypress Tests
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 21
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+      - name: Run Cypress Tests in chrome
+        uses: cypress-io/github-action@v6
+        with:
+          record: true
+          parallel: true
+          command: yarn test:e2e:ci:chrome --env app_url=${{ env.APP_URL }}
+          install-command: yarn install
+        env:
+          APP_URL: ${{ needs.deploy.outputs.DEPLOY_URL }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

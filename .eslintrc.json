@@ -80,6 +80,8 @@
       "rules": {
         "jest/no-disabled-tests": "warn",
         "jest/no-focused-tests": "error",
+        "testing-library/no-unnecessary-act": "off",
+        "jest/no-standalone-expect": "off",
         "jest/no-identical-title": "error",
         "jest/prefer-to-have-length": "warn",
         "jest/valid-expect": "error",
@@ -99,7 +101,7 @@
       "rules": {
         "cypress/no-force": "warn",
         "cypress/assertion-before-screenshot": "warn",
-        "cypress/require-data-selectors": "warn",
+        "cypress/require-data-selectors": "off",
         "cypress/no-pause": "error"
       },
       "env": {

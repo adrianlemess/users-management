@@ -83,8 +83,8 @@ export default function SignIn() {
             }}
             validationSchema={SignInSchema}
             onSubmit={values => {
-              setUserSignIn(values);
               handleSignIn(values);
+              setUserSignIn(values);
             }}
           >
             {() => (
@@ -99,7 +99,7 @@ export default function SignIn() {
                       form: FormikProps<{ email: string }>;
                     }) => (
                       <FormControl
-                        isInvalid={!!form.errors.email && form.touched.email}
+                        isInvalid={!!form.errors.email && !!form.touched.email}
                       >
                         <InputGroup size="md">
                           <InputLeftElement
@@ -151,6 +151,7 @@ export default function SignIn() {
                               colorScheme="teal"
                               variant="outline"
                               size="sm"
+                              data-testid="show-password-button"
                               onClick={handleShowPassword}
                             >
                               {showPassword ? "Hide" : "Show"}
