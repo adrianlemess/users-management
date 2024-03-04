@@ -140,6 +140,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: deploy
     strategy:
+      fail-fast: false
       matrix:
         inspection_command: ["chrome", "firefox"]
     steps:
@@ -156,7 +157,12 @@ jobs:
       - name: Run Cypress Tests in ${{ matrix.inspection_command }}
         uses: cypress-io/github-action@v6
         with:
+          record: true
+          parallel: true
           start: yarn test:e2e:ci:${{ matrix.inspection_command }} --env app_url=${{ env.APP_URL }}
           browser: ${{ matrix.inspection_command }}
         env:
           APP_URL: ${{ needs.deploy.outputs.DEPLOY_URL }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
