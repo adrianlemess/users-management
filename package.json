@@ -26,7 +26,8 @@
     "test:ci": "jest",
     "test:coverage": "jest --silent --watchAll=false --coverage",
     "test:e2e": "start-server-and-test serve http://127.0.0.1:3000/ 'cypress open'",
-    "test:e2e:ci": "start-server-and-test serve http://127.0.0.1:3000/ 'cypress run'",
+    "test:e2e:ci:chrome": "cypress run --headless --browser chrome",
+    "test:e2e:ci:firefox": "cypress run --headless --browser firefox",
     "typecheck": "tsc --noEmit",
     "vite:analyze": "vite build --mode analyze"
   },

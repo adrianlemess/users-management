@@ -1,10 +1,9 @@
+import { CONFIG_VAR } from "./config";
 import { AUTH_SELECTORS } from "./selectors/auth";
 
 describe("SignIn", () => {
   beforeEach(() => {
-    cy.visit(
-      "https://user-management-1global-cjl3qqk80-adrian-lemes-projects.vercel.app/signin",
-    );
+    cy.visit(`${CONFIG_VAR.app_url}/signin`);
   });
 
   it("Should test all fields validation", () => {
@@ -20,19 +19,19 @@ describe("SignIn", () => {
   });
 
   it("Should submit the form when all fields are valid", () => {
-    cy.get(AUTH_SELECTORS.email).type("eve.holt@reqres.in");
-    cy.get(AUTH_SELECTORS.password).type("Asd1234567");
+    cy.get(AUTH_SELECTORS.email).type(CONFIG_VAR.validUser.email);
+    cy.get(AUTH_SELECTORS.password).type(CONFIG_VAR.validUser.password);
 
     cy.contains("Sign In").click();
 
     cy.url().should("include", "/dashboard");
 
-    cy.contains("Welcome eve.holt@reqres.in").should("exist");
+    cy.contains(`Welcome ${CONFIG_VAR.validUser.email}`).should("exist");
   });
 
   it("Should display a toast with the error message when the sign in fails", () => {
-    cy.get(AUTH_SELECTORS.email).type("invalid-email@email.com");
-    cy.get(AUTH_SELECTORS.password).type("Asd1234567");
+    cy.get(AUTH_SELECTORS.email).type(CONFIG_VAR.invalidUser.email);
+    cy.get(AUTH_SELECTORS.password).type(CONFIG_VAR.invalidUser.password);
 
     cy.contains("Sign In").click();
 

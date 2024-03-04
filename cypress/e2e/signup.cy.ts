@@ -1,10 +1,9 @@
+import { CONFIG_VAR } from "./config";
 import { AUTH_SELECTORS } from "./selectors/auth";
 
 describe("SignUp", () => {
   beforeEach(() => {
-    cy.visit(
-      "https://user-management-1global-cjl3qqk80-adrian-lemes-projects.vercel.app/signup",
-    );
+    cy.visit(`${CONFIG_VAR.app_url}/signup`);
   });
 
   it("Should test all fields validation", () => {
@@ -53,25 +52,29 @@ describe("SignUp", () => {
   });
 
   it("Should submit the form when all fields are valid", () => {
-    cy.get(AUTH_SELECTORS.firstName).type("John");
-    cy.get(AUTH_SELECTORS.lastName).type("Doe");
-    cy.get(AUTH_SELECTORS.email).type("eve.holt@reqres.in");
-    cy.get(AUTH_SELECTORS.password).type("Asd1234567");
-    cy.get(AUTH_SELECTORS.confirmationPassword).type("Asd1234567");
+    cy.get(AUTH_SELECTORS.firstName).type(CONFIG_VAR.validUser.firstName);
+    cy.get(AUTH_SELECTORS.lastName).type(CONFIG_VAR.validUser.lastName);
+    cy.get(AUTH_SELECTORS.email).type(CONFIG_VAR.validUser.email);
+    cy.get(AUTH_SELECTORS.password).type(CONFIG_VAR.validUser.password);
+    cy.get(AUTH_SELECTORS.confirmationPassword).type(
+      CONFIG_VAR.validUser.password,
+    );
 
     cy.contains("Sign Up").click();
 
     cy.url().should("include", "/dashboard");
 
-    cy.contains("Welcome John").should("exist");
+    cy.contains(`Welcome ${CONFIG_VAR.validUser.firstName}`).should("exist");
   });
 
   it("Should display a toast with the error message when the sign up fails", () => {
-    cy.get(AUTH_SELECTORS.firstName).type("John");
-    cy.get(AUTH_SELECTORS.lastName).type("Doe");
-    cy.get(AUTH_SELECTORS.email).type("invalid-email@email.com");
-    cy.get(AUTH_SELECTORS.password).type("Asd1234567");
-    cy.get(AUTH_SELECTORS.confirmationPassword).type("Asd1234567");
+    cy.get(AUTH_SELECTORS.firstName).type(CONFIG_VAR.invalidUser.firstName);
+    cy.get(AUTH_SELECTORS.lastName).type(CONFIG_VAR.invalidUser.lastName);
+    cy.get(AUTH_SELECTORS.email).type(CONFIG_VAR.invalidUser.email);
+    cy.get(AUTH_SELECTORS.password).type(CONFIG_VAR.invalidUser.password);
+    cy.get(AUTH_SELECTORS.confirmationPassword).type(
+      CONFIG_VAR.invalidUser.password,
+    );
 
     cy.contains("Sign Up").click();
 

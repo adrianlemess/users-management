@@ -101,7 +101,7 @@
       "rules": {
         "cypress/no-force": "warn",
         "cypress/assertion-before-screenshot": "warn",
-        "cypress/require-data-selectors": "warn",
+        "cypress/require-data-selectors": "off",
         "cypress/no-pause": "error"
       },
       "env": {
