@@ -109,17 +109,19 @@ jobs:
           if [ $code -eq 0 ]; then
               deploymentUrl=`cat deployment-url.txt`
               echo "DEPLOY_URL=$deploymentUrl" >> $GITHUB_ENV
-              echo "DEPLOY_URL=$deploymentUrl" >> $GITHUB_OUTPUT
           else
               errorMessage=`cat error.txt`
               echo "There was an error: $errorMessage"
               exit 1
           fi
+      - name: Set Deployment URL
+        id: set_var
+        run: |
+          echo "DEPLOY_URL=${{ env.DEPLOY_URL }}" >> $GITHUB_OUTPUT"
       - name: Comment PR
         run: |
           commitMessage=$(git log --format=%B -n 1 ${{ github.sha }})
           echo "DEPLOY_URL=${{ env.DEPLOY_URL }}" >> $GITHUB_ENV
-          echo "
           | Environment | URL |
           | - | - |
             | 🚀 Preview URL | ${{ env.DEPLOY_URL }} |
@@ -148,7 +150,7 @@ jobs:
       - name: Run Cypress Tests in ${{ matrix.inspection_command }}
         uses: cypress-io/github-action@v6
         with:
-          start: yarn test:e2e:ci:${{ matrix.inspection_command }} --env app_url=${{ env.DEPLOY_URL }}
+          start: yarn test:e2e:ci:${{ matrix.inspection_command }} --env app_url=${{ env.APP_URL }}
           browser: ${{ matrix.inspection_command }}
         env:
-          DEPLOY_URL: ${{ needs.deploy.outputs.DEPLOY_URL }}
+          APP_URL: ${{ needs.deploy.outputs.DEPLOY_URL }}
