@@ -151,6 +151,7 @@ export default function SignIn() {
                               colorScheme="teal"
                               variant="outline"
                               size="sm"
+                              data-testid="show-password-button"
                               onClick={handleShowPassword}
                             >
                               {showPassword ? "Hide" : "Show"}
