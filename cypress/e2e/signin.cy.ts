@@ -9,13 +9,13 @@ describe("SignIn", () => {
   it("Should test all fields validation", () => {
     cy.contains("Sign In").click();
 
+    // Validate invalid email
+    cy.get(AUTH_SELECTORS.email).type("invalid-email");
+    cy.contains("Invalid email address", { timeout: 5000 }).should("exist");
+
     // Validate required fields
     cy.contains("Email is required").should("exist");
     cy.contains("Password is required").should("exist");
-
-    // Validate invalid email
-    cy.get(AUTH_SELECTORS.email).type("invalid-email");
-    cy.contains("Invalid email address").should("exist");
   });
 
   it("Should submit the form when all fields are valid", () => {
