@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 
-import Dashboard from "./Dashboard";
+import { Dashboard } from "./Dashboard";
 
 describe("Dashboard", () => {
   it("should renders a msg", () => {
