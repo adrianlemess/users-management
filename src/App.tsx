@@ -11,18 +11,7 @@ import Dashboard from "@/pages/Dashboard/Dashboard";
 import SignIn from "@/pages/SignIn/SignIn";
 import SignUp from "@/pages/SignUp/SignUp";
 
-import { USER_SESSION_KEY } from "./constants";
-import { UserSignResponse } from "./types";
-
-const getUser = (): string => {
-  if (localStorage.getItem(USER_SESSION_KEY)) {
-    const user = JSON.parse(
-      localStorage.getItem(USER_SESSION_KEY) || "",
-    ) as UserSignResponse;
-    return user.first_name || user.email || "";
-  }
-  return "";
-};
+import { useAuthStore } from "./state";
 
 const router = createBrowserRouter([
   {
@@ -36,8 +25,8 @@ const router = createBrowserRouter([
             path: "",
             element: <Dashboard />,
             loader: async () => {
-              const user = getUser();
-              if (!user) {
+              const isAuthenticated = useAuthStore.getState().isAuthenticated();
+              if (!isAuthenticated) {
                 return redirect("/signin");
               }
               return null;
@@ -69,8 +58,8 @@ const router = createBrowserRouter([
       {
         path: "/",
         loader: async () => {
-          const user = getUser();
-          if (user) {
+          const isAuthenticated = useAuthStore.getState().isAuthenticated();
+          if (isAuthenticated) {
             return redirect("/dashboard");
           }
           return redirect("/signup");

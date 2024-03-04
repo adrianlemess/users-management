@@ -21,17 +21,16 @@ import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import Logo from "@/assets/logo.svg";
 import { ReactIcons } from "@/components/Icons/Icons";
 import { useSignUp } from "@/hooks";
+import { useAuthStore } from "@/state";
 import { SignUpSchema } from "@/utils";
 
 type ShowPasswordType = "password" | "confirmation_password";
 
 export default function SignUp() {
   const toast = useToast();
-  const { requestStatus, error, handleSignUp } = useSignUp();
+  const { userSession, requestStatus, error, handleSignUp } = useSignUp();
+  const { setUserSession } = useAuthStore();
   const navigate = useNavigate();
-  const [userSignUp, setUserSignUp] = useState<Record<string, string> | null>(
-    null,
-  );
 
   const COLORS = {
     bg: useColorModeValue("white", "gray.600"),
@@ -58,12 +57,11 @@ export default function SignUp() {
         isClosable: true,
       });
     }
-    if (requestStatus === "resolved") {
-      navigate("/dashboard", {
-        state: userSignUp,
-      });
+    if (requestStatus === "resolved" && userSession) {
+      setUserSession(userSession);
+      navigate("/dashboard");
     }
-  }, [error, requestStatus, navigate, toast, userSignUp]);
+  }, [error, requestStatus, navigate, toast, userSession, setUserSession]);
 
   const handleShowPassword = (type: ShowPasswordType) => {
     setShowPassword({
@@ -100,18 +98,12 @@ export default function SignUp() {
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               const { confirmation_password, ...userSignUpInput } = values;
               handleSignUp(userSignUpInput);
-              setUserSignUp(userSignUpInput);
             }}
           >
             {() => (
               <Form>
                 <Stack spacing={4}>
-                  <Field
-                    name="first_name"
-                    type="text"
-                    label="First Name"
-                    autoComplete="given-name"
-                  >
+                  <Field name="first_name" type="text" label="First Name">
                     {({
                       field,
                       form,
@@ -129,7 +121,11 @@ export default function SignUp() {
                             children={<ReactIcons.User color={COLORS.icon} />}
                             pointerEvents="none"
                           />
-                          <Input {...field} placeholder="First Name" />
+                          <Input
+                            {...field}
+                            autoComplete="given-name"
+                            placeholder="First Name"
+                          />
                         </InputGroup>
                         <FormErrorMessage>
                           {form.errors.first_name}
@@ -137,12 +133,7 @@ export default function SignUp() {
                       </FormControl>
                     )}
                   </Field>
-                  <Field
-                    name="last_name"
-                    type="text"
-                    label="Last Name"
-                    autoComplete="last-name"
-                  >
+                  <Field name="last_name" type="text" label="Last Name">
                     {({
                       field,
                       form,
@@ -160,7 +151,11 @@ export default function SignUp() {
                             children={<ReactIcons.User color={COLORS.icon} />}
                             pointerEvents="none"
                           />
-                          <Input {...field} placeholder="Last Name" />
+                          <Input
+                            {...field}
+                            autoComplete="last-name"
+                            placeholder="Last Name"
+                          />
                         </InputGroup>
                         <FormErrorMessage>
                           {form.errors.last_name}
@@ -168,12 +163,7 @@ export default function SignUp() {
                       </FormControl>
                     )}
                   </Field>
-                  <Field
-                    name="email"
-                    type="email"
-                    label="email"
-                    autoComplete="email"
-                  >
+                  <Field name="email" type="email" label="email">
                     {({
                       field,
                       form,
@@ -189,17 +179,17 @@ export default function SignUp() {
                             children={<ReactIcons.Email color={COLORS.icon} />}
                             pointerEvents="none"
                           />
-                          <Input {...field} placeholder="Email address" />
+                          <Input
+                            {...field}
+                            placeholder="Email address"
+                            autoComplete="email"
+                          />
                         </InputGroup>
                         <FormErrorMessage>{form.errors.email}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
-                  <Field
-                    name="password"
-                    label="Enter Password"
-                    autoComplete="new-password"
-                  >
+                  <Field name="password" label="Enter Password">
                     {({
                       field,
                       form,
@@ -223,6 +213,7 @@ export default function SignUp() {
                             {...field}
                             type={showPassword.password ? "text" : "password"}
                             pr="4.5rem"
+                            autoComplete="new-password"
                             placeholder="Enter password"
                           />
                           <InputRightElement width="4.5rem">
@@ -244,11 +235,7 @@ export default function SignUp() {
                       </FormControl>
                     )}
                   </Field>
-                  <Field
-                    name="confirmation_password"
-                    autoComplete="new-password"
-                    label="Confirmation Name"
-                  >
+                  <Field name="confirmation_password" label="Confirmation Name">
                     {({
                       field,
                       form,
@@ -276,6 +263,7 @@ export default function SignUp() {
                                 ? "text"
                                 : "password"
                             }
+                            autoComplete="new-password"
                             pr="4.5rem"
                             placeholder="Enter confirmation password"
                           />

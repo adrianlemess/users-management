@@ -21,16 +21,16 @@ import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import Logo from "@/assets/logo.svg";
 import { ReactIcons } from "@/components/Icons/Icons";
 import { useSignIn } from "@/hooks";
-import { UserSignInInput } from "@/types";
+import { useAuthStore } from "@/state";
 import { SignInSchema } from "@/utils";
 
 export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
+  const { setUserSession } = useAuthStore();
 
-  const { requestStatus, error, handleSignIn } = useSignIn();
-  const [userSignIn, setUserSignIn] = useState<UserSignInInput | null>(null);
+  const { userSession, requestStatus, error, handleSignIn } = useSignIn();
 
   const COLORS = {
     bg: useColorModeValue("white", "gray.600"),
@@ -55,12 +55,11 @@ export default function SignIn() {
       });
     }
 
-    if (requestStatus === "resolved") {
-      navigate("/dashboard", {
-        state: userSignIn,
-      });
+    if (requestStatus === "resolved" && userSession) {
+      setUserSession(userSession);
+      navigate("/dashboard");
     }
-  }, [error, requestStatus, navigate, toast, userSignIn]);
+  }, [error, requestStatus, navigate, toast, userSession, setUserSession]);
 
   return (
     <Box maxW="sm">
@@ -84,7 +83,6 @@ export default function SignIn() {
             validationSchema={SignInSchema}
             onSubmit={values => {
               handleSignIn(values);
-              setUserSignIn(values);
             }}
           >
             {() => (
