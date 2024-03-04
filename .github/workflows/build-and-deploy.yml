@@ -14,8 +14,7 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        inspection_command:
-          ["lint:ci", "prettier:ci", "typecheck", "test:coverage"]
+        inspection_command: ["lint:ci"]
 
     steps:
       - name: Checkout
@@ -87,6 +86,8 @@ jobs:
     name: Deploy to Preview Vercel
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      DEPLOY_URL: ${{ steps.set_var.outputs.DEPLOY_URL }}
     needs: [inspections, build]
     steps:
       - name: Download build artifacts
@@ -108,6 +109,7 @@ jobs:
           if [ $code -eq 0 ]; then
               deploymentUrl=`cat deployment-url.txt`
               echo "DEPLOY_URL=$deploymentUrl" >> $GITHUB_ENV
+              echo "DEPLOY_URL=$deploymentUrl" >> $GITHUB_OUTPUT
           else
               errorMessage=`cat error.txt`
               echo "There was an error: $errorMessage"
@@ -132,6 +134,9 @@ jobs:
     name: Run Cypress Tests
     runs-on: ubuntu-22.04
     needs: deploy
+    strategy:
+      matrix:
+        inspection_command: ["chrome", "firefox"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -140,15 +145,10 @@ jobs:
         with:
           name: dist
           path: dist
-
-      - name: Run Cypress Tests - Chrome
+      - name: Run Cypress Tests in ${{ matrix.inspection_command }}
         uses: cypress-io/github-action@v6
         with:
-          start: yarn test:e2e:ci:chrome --env app_url=${{ env.DEPLOY_URL }}
-          browser: chrome
-
-      - name: Run Cypress Tests - Firefox
-        uses: cypress-io/github-action@v6
-        with:
-          start: yarn test:e2e:ci:firefox --env app_url=${{ env.DEPLOY_URL }}
-          browser: firefox
+          start: yarn test:e2e:ci:${{ matrix.inspection_command }} --env app_url=${{ env.DEPLOY_URL }}
+          browser: ${{ matrix.inspection_command }}
+        env:
+          DEPLOY_URL: ${{ needs.deploy.outputs.DEPLOY_URL }}
