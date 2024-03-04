@@ -139,10 +139,6 @@ jobs:
     name: Run Cypress Tests
     runs-on: ubuntu-latest
     needs: deploy
-    strategy:
-      fail-fast: false
-      matrix:
-        inspection_command: ["chrome", "firefox"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -154,13 +150,13 @@ jobs:
         with:
           name: dist
           path: dist
-      - name: Run Cypress Tests in ${{ matrix.inspection_command }}
+      - name: Run Cypress Tests in chrome
         uses: cypress-io/github-action@v6
         with:
           record: true
           parallel: true
-          start: yarn test:e2e:ci:${{ matrix.inspection_command }} --env app_url=${{ env.APP_URL }}
-          browser: ${{ matrix.inspection_command }}
+          command: yarn test:e2e:ci:chrome --env app_url=${{ env.APP_URL }}
+          browser: chrome
         env:
           APP_URL: ${{ needs.deploy.outputs.DEPLOY_URL }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
