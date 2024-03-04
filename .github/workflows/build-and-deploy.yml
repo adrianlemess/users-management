@@ -14,7 +14,8 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        inspection_command: ["lint:ci"]
+        inspection_command:
+          ["lint:ci", "prettier:ci", "typecheck", "test:coverage"]
 
     steps:
       - name: Checkout
@@ -117,7 +118,7 @@ jobs:
       - name: Set Deployment URL
         id: set_var
         run: |
-          echo "DEPLOY_URL=${{ env.DEPLOY_URL }}" >> $GITHUB_OUTPUT"
+          echo "DEPLOY_URL=${{ env.DEPLOY_URL }}" >> $GITHUB_OUTPUT
       - name: Comment PR
         run: |
           commitMessage=$(git log --format=%B -n 1 ${{ github.sha }})
