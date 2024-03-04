@@ -156,7 +156,7 @@ jobs:
           record: true
           parallel: true
           command: yarn test:e2e:ci:chrome --env app_url=${{ env.APP_URL }}
-          browser: chrome
+          install-command: yarn install
         env:
           APP_URL: ${{ needs.deploy.outputs.DEPLOY_URL }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
