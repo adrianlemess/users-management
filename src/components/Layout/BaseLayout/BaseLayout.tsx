@@ -1,19 +1,17 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 
-import Sidebar from "../../Sidebar/Sidebar";
+import Header from "../../Header/Header";
 import { RootLayout } from "../RootLayout/RootLayout";
 
 const BaseLayout = () => {
   return (
-    <Flex>
-      <RootLayout>
-        <Sidebar />
-        <Box flex="1" p="4">
-          <Outlet />
-        </Box>
-      </RootLayout>
-    </Flex>
+    <RootLayout>
+      <Header />
+      <Box flex="1" p="4">
+        <Outlet />
+      </Box>
+    </RootLayout>
   );
 };
 

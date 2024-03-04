@@ -1,19 +1,15 @@
 import { Box, Heading } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
 
-import { USER_SESSION_KEY } from "@/constants";
+import { useAuthStore } from "@/state";
 
 export default function Dashboard() {
-  const { state } = useLocation();
-  let user = state?.first_name || state?.email;
-  if (!user) {
-    // grab user from local storage
-    const userData = JSON.parse(localStorage.getItem(USER_SESSION_KEY) || "{}");
-    user = userData?.first_name || userData?.email;
-  }
+  const userSession = useAuthStore(state => state.userSession);
+
   return (
     <Box>
-      <Heading data-testid="title">Welcome {user}</Heading>
+      <Heading data-testid="title">
+        Welcome {userSession?.first_name || userSession?.email || ""}
+      </Heading>
     </Box>
   );
 }

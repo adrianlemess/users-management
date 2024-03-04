@@ -9,9 +9,8 @@ export const ThemeToggle = () => {
   return (
     <IconButton
       size="lg"
-      bottom="10em"
+      bottom="2em"
       right="4"
-      top={2}
       position="fixed"
       color={color}
       border="1px solid"

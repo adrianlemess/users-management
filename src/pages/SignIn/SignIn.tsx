@@ -74,7 +74,7 @@ export default function SignIn() {
           color={COLORS.color}
           shadow="md"
         >
-          <Image src={Logo} marginY={10} mx={5} alt="1Global Logo" />
+          <Image src={Logo} marginY="1em" mx={5} alt="1Global Logo" />
           <Formik
             initialValues={{
               email: "",
@@ -182,7 +182,7 @@ export default function SignIn() {
           </Formik>
         </Stack>
       </Stack>
-      <Flex justifyContent="end">
+      <Flex justifyContent="start">
         New to us?{" "}
         <Link color={COLORS.link} as={ReactRouterLink} to="/signup" ml={2}>
           Sign Up

@@ -83,7 +83,7 @@ export default function SignUp() {
           overflow="hidden"
           shadow="md"
         >
-          <Image src={Logo} marginY={10} mx={5} alt="1Global Logo" />
+          <Image src={Logo} marginY="1em" mx={5} alt="1Global Logo" />
           <Formik
             initialValues={{
               email: "",
@@ -310,7 +310,7 @@ export default function SignUp() {
           </Formik>
         </Stack>
       </Stack>
-      <Flex justifyContent="end">
+      <Flex justifyContent="start">
         Already have an account?{" "}
         <Link color={COLORS.link} as={ReactRouterLink} to="/signin" ml={2}>
           Sign In
