@@ -144,15 +144,11 @@ jobs:
       - name: Run Cypress Tests - Chrome
         uses: cypress-io/github-action@v6
         with:
-          start: npm start
+          start: yarn test:e2e:ci:chrome --env app_url=${{ env.DEPLOY_URL }}
           browser: chrome
-        env:
-          app_url: ${{ env.DEPLOY_URL }}
 
       - name: Run Cypress Tests - Firefox
         uses: cypress-io/github-action@v6
         with:
-          start: npm start
+          start: yarn test:e2e:ci:firefox --env app_url=${{ env.DEPLOY_URL }}
           browser: firefox
-        env:
-          app_url: ${{ env.DEPLOY_URL }}
