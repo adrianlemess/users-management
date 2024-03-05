@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: PR validations and preview deployment
 
 on:
   pull_request:
