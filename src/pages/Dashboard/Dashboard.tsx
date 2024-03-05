@@ -25,12 +25,7 @@ export const Dashboard = () => {
     <>
       {loading ? (
         <Flex w={"100%"} maxW={"1200px"} justify="space-between" wrap={"wrap"}>
-          <CardSkeleton />
-          <CardSkeleton />
-          <CardSkeleton />
-          <CardSkeleton />
-          <CardSkeleton />
-          <CardSkeleton />
+          {new Array(6).fill(<CardSkeleton />)}
         </Flex>
       ) : (
         <Flex w={"100%"} maxW={"1200px"} justify="space-between" wrap={"wrap"}>
