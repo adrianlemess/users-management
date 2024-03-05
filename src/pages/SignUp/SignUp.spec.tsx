@@ -6,7 +6,7 @@ import React from "react";
 import { server } from "../../__tests__/msw/server";
 import { TestWrapper } from "../../__tests__/test-providers";
 import { fillInputByPlaceholder } from "../../__tests__/utils";
-import SignUp from "./SignUp";
+import { SignUp } from "./SignUp";
 
 describe("SignUp", () => {
   beforeEach(async () => {

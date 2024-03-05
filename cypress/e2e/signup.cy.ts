@@ -109,6 +109,12 @@ describe("SignUp", () => {
       "password",
     );
   });
+
+  it("When the user is not logged in, the user should be redirected to the SignUp page", () => {
+    cy.visit(`${CONFIG_VAR.app_url}`);
+
+    cy.url().should("include", "/signup");
+  });
 });
 
 export {};

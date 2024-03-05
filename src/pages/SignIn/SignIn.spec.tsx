@@ -6,7 +6,7 @@ import { SignInResponseMock } from "../../__tests__/msw/mock";
 import { server } from "../../__tests__/msw/server";
 import { TestWrapper } from "../../__tests__/test-providers";
 import { fillInputByPlaceholder } from "../../__tests__/utils";
-import SignIn from "./SignIn";
+import { SignIn } from "./SignIn";
 
 describe("SignIn", () => {
   beforeEach(async () => {

@@ -21,16 +21,16 @@ import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import Logo from "@/assets/logo.svg";
 import { ReactIcons } from "@/components/Icons/Icons";
 import { useSignIn } from "@/hooks";
-import { UserSignInInput } from "@/types";
+import { useAuthStore } from "@/state";
 import { SignInSchema } from "@/utils";
 
-export default function SignIn() {
+export const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
+  const { setUserSession } = useAuthStore();
 
-  const { requestStatus, error, handleSignIn } = useSignIn();
-  const [userSignIn, setUserSignIn] = useState<UserSignInInput | null>(null);
+  const { userSession, requestStatus, error, handleSignIn } = useSignIn();
 
   const COLORS = {
     bg: useColorModeValue("white", "gray.600"),
@@ -55,12 +55,11 @@ export default function SignIn() {
       });
     }
 
-    if (requestStatus === "resolved") {
-      navigate("/dashboard", {
-        state: userSignIn,
-      });
+    if (requestStatus === "resolved" && userSession) {
+      setUserSession(userSession);
+      navigate("/dashboard");
     }
-  }, [error, requestStatus, navigate, toast, userSignIn]);
+  }, [error, requestStatus, navigate, toast, userSession, setUserSession]);
 
   return (
     <Box maxW="sm">
@@ -75,7 +74,7 @@ export default function SignIn() {
           color={COLORS.color}
           shadow="md"
         >
-          <Image src={Logo} marginY={10} mx={5} alt="1Global Logo" />
+          <Image src={Logo} marginY="1em" mx={5} alt="1Global Logo" />
           <Formik
             initialValues={{
               email: "",
@@ -84,7 +83,6 @@ export default function SignIn() {
             validationSchema={SignInSchema}
             onSubmit={values => {
               handleSignIn(values);
-              setUserSignIn(values);
             }}
           >
             {() => (
@@ -184,7 +182,7 @@ export default function SignIn() {
           </Formik>
         </Stack>
       </Stack>
-      <Flex justifyContent="end">
+      <Flex justifyContent="start">
         New to us?{" "}
         <Link color={COLORS.link} as={ReactRouterLink} to="/signup" ml={2}>
           Sign Up
@@ -192,4 +190,4 @@ export default function SignIn() {
       </Flex>
     </Box>
   );
-}
+};

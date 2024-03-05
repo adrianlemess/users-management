@@ -54,6 +54,25 @@ describe("SignIn", () => {
 
     cy.get(AUTH_SELECTORS.password).should("have.attr", "type", "password");
   });
+
+  it("When the user is logged in, the user should be redirected to the dashboard", () => {
+    cy.get(AUTH_SELECTORS.email).type(CONFIG_VAR.validUser.email);
+    cy.get(AUTH_SELECTORS.password).type(CONFIG_VAR.validUser.password);
+
+    cy.get(AUTH_SELECTORS.submitButton).click();
+
+    cy.url().should("include", "/dashboard");
+
+    cy.visit(`${CONFIG_VAR.app_url}`);
+
+    cy.url().should("include", "/dashboard");
+  });
+
+  it("When the user is not logged in, and try to access the dashboard, should be redirected to the SignIn page", () => {
+    cy.visit(`${CONFIG_VAR.app_url}/dashboard`);
+
+    cy.url().should("include", "/signin");
+  });
 });
 
 export {};
