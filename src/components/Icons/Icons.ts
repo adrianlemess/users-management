@@ -1,5 +1,6 @@
 import { chakra } from "@chakra-ui/react";
 import {
+  MdAdd,
   MdDelete,
   MdEmail,
   MdNightsStay,
@@ -15,4 +16,5 @@ export const ReactIcons = {
   Sun: chakra(MdOutlineWbSunny),
   Moon: chakra(MdNightsStay),
   Thrash: chakra(MdDelete),
+  Add: chakra(MdAdd),
 };

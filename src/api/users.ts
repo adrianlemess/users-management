@@ -4,9 +4,14 @@ import { Pagination, User } from "@/types";
 
 import axios from "./axios";
 
-export const getUsers = async (): Promise<Pagination<User>> => {
+export const getUsers = async (
+  page: number,
+  itemsPerPage: number,
+): Promise<Pagination<User>> => {
   try {
-    const response = await axios.get<Pagination<User>>(`/users?delay=2`);
+    const response = await axios.get<Pagination<User>>(
+      `/users?delay=2&page=${page}&&per_page=${itemsPerPage}`,
+    );
 
     return response.data;
   } catch (error) {
