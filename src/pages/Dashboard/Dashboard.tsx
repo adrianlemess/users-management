@@ -1,4 +1,4 @@
-import { Box, Flex, Heading } from "@chakra-ui/layout";
+import { Box, Flex, Heading, WrapItem } from "@chakra-ui/layout";
 import { Button, Icon, Skeleton, useDisclosure, Wrap } from "@chakra-ui/react";
 import { useEffect } from "react";
 
@@ -30,6 +30,11 @@ export const Dashboard = () => {
     getInitialUsers(1, ITEMS_PER_PAGE);
   }, [getInitialUsers]);
 
+  const handlerCreateUser = async (user: NewUser) => {
+    createUser({ ...user });
+    onClose();
+  };
+
   return (
     <>
       <Heading mb={10} data-testid="title">
@@ -46,7 +51,7 @@ export const Dashboard = () => {
             <>
               {/* Create button skeleton */}
               <Wrap justify="flex-end" mb={5}>
-                <Skeleton h={10} w={40} borderRadius="md" />
+                <Skeleton h={10} w={"200px"} borderRadius="md" />
               </Wrap>
               <Flex
                 w={"100%"}
@@ -67,6 +72,7 @@ export const Dashboard = () => {
               </Flex>
             </>
           ) : (
+            // If there is no user in the list, show a message to create a new user
             <>
               <Wrap justify="flex-end" mb={5}>
                 <Button colorScheme="green" onClick={onOpen}>
@@ -74,19 +80,20 @@ export const Dashboard = () => {
                   Create a new user
                 </Button>
               </Wrap>
-
-              <Flex
-                w={"100%"}
-                maxW={"1200px"}
-                justify="space-between"
-                wrap={"wrap"}
-              >
+              {users.length === 0 && (
+                <Box w={"100%"} maxW={"1200px"} mt={10}>
+                  <Heading textAlign="center" size="md">
+                    There are no users, create a new one
+                  </Heading>
+                </Box>
+              )}
+              <Wrap w={"100%"} maxW={"1200px"} spacingX="138px" minH="64vh">
                 {users.map((user: User) => (
-                  <Box key={user.id}>
+                  <WrapItem key={user.id}>
                     <CardUser user={user} />
-                  </Box>
+                  </WrapItem>
                 ))}
-              </Flex>
+              </Wrap>
             </>
           )}
           <Flex mt={10} justify="center">
@@ -103,7 +110,7 @@ export const Dashboard = () => {
             heading="Create a new user"
             calToAction="Create"
             onClose={onClose}
-            onSubmit={(user: NewUser) => createUser(user)}
+            onSubmit={(user: NewUser) => handlerCreateUser(user)}
           />
         </>
       )}
