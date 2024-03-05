@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { getUsers } from "@/api/users";
 import { CardSkeleton } from "@/components/CardSkeleton/CardSkeleton";
 import { CardUser } from "@/components/CardUser/CardUser";
-import { Pagination, User } from "@/types";
 import { useAuthStore } from "@/state";
+import { Pagination, User } from "@/types";
 
 export const Dashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
