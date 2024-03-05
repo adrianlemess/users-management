@@ -27,7 +27,8 @@ export const useAuthStore = create<AuthState>()(
         localStorage.removeItem("auth");
       },
       isAuthenticated: () => {
-        return !!get().userSession;
+        // @TODO check if the token is valid and has not expired
+        return !!get().userSession?.token;
       },
     }),
     { name: "auth" },
