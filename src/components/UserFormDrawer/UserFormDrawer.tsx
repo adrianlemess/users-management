@@ -22,16 +22,18 @@ import { createUpdateUserSchema } from "@/utils";
 
 import { ReactIcons } from "../Icons/Icons";
 
-type UserFormDrawerProps = {
+type OnSubmitFunction<T> = (data: T) => void;
+
+type UserFormDrawerProps<T> = {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: User | NewUser) => void;
+  onSubmit: OnSubmitFunction<T>;
   calToAction: string;
   user?: User;
   heading: string;
 };
 
-export const UserFormDrawer = (props: UserFormDrawerProps) => {
+export const UserFormDrawer = (props: UserFormDrawerProps<NewUser | User>) => {
   const { isOpen, onClose, calToAction, onSubmit, user, heading } = props;
   const COLORS = {
     bg: useColorModeValue("white", "gray.600"),

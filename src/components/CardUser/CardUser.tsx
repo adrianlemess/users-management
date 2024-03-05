@@ -8,7 +8,7 @@ import { Divider, Flex, Heading, Stack, Text } from "@chakra-ui/layout";
 import { motion } from "framer-motion";
 
 import { useUsersStore } from "@/state/users";
-import { User } from "@/types";
+import { NewUser, User } from "@/types";
 
 import { DeleteConfirmationDialog } from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
 import { ReactIcons } from "../Icons/Icons";
@@ -43,6 +43,15 @@ export const CardUser = (props: ListItemProps) => {
     deleteUser(userId).then(() => {
       onDeleteClose();
     });
+  };
+
+  const handlerUpdateUser = (user: User | NewUser) => {
+    if ("id" in user) {
+      // handle logic for existing user
+      updateUser(user as User).then(() => {
+        onUpdateClose();
+      });
+    }
   };
 
   return (
@@ -96,7 +105,7 @@ export const CardUser = (props: ListItemProps) => {
         calToAction="Update"
         user={user}
         onClose={onUpdateClose}
-        onSubmit={updateUser}
+        onSubmit={(user: User | NewUser) => handlerUpdateUser(user)}
       />
       <DeleteConfirmationDialog
         isOpen={isDeleteOpen}

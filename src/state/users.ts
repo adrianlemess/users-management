@@ -89,7 +89,7 @@ export const useUsersStore = create<UsersState>()((set, get) => ({
       set({ requestStatus: "rejected" });
     }
   },
-  createUser: async (user: User) => {
+  createUser: async (user: NewUser) => {
     console.log(user);
   },
   updateUser: async (user: User) => {
