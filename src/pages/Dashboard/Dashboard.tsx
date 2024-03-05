@@ -42,7 +42,7 @@ export const Dashboard = () => {
       </Heading>
 
       {requestStatus === "rejected" ? (
-        <Flex w={"100%"} maxW={"1200px"} justify="space-between" wrap={"wrap"}>
+        <Flex w={"100%"} justify="space-between" wrap={"wrap"}>
           <Heading>Something went wrong</Heading>
         </Flex>
       ) : (
@@ -50,7 +50,7 @@ export const Dashboard = () => {
           {requestStatus === "pending" ? (
             <>
               {/* Create button skeleton */}
-              <Wrap justify="flex-end" mb={5}>
+              <Wrap justify="flex-start" mb={5}>
                 <Skeleton h={10} w={"200px"} borderRadius="md" />
               </Wrap>
               <Flex
@@ -59,13 +59,15 @@ export const Dashboard = () => {
                 justify="space-between"
                 wrap={"wrap"}
               >
-                {/* Fill with ITEMS_PER_PAGE amount of skeleton cards */}
-                {Array.from({ length: ITEMS_PER_PAGE }, (_, i) => (
-                  <CardSkeleton key={i} />
-                ))}
-                {/* Pagination Skeleton */}
+                <Wrap maxW={"1200px"} minH="64vh" spacingX={[2, 15]}>
+                  {Array.from({ length: ITEMS_PER_PAGE }, (_, i) => (
+                    <WrapItem key={i} mr={[0, "5.1em"]}>
+                      <CardSkeleton />
+                    </WrapItem>
+                  ))}
+                </Wrap>
                 {users.length === 0 && (
-                  <Flex mt="10" w={"100%"} justify="center">
+                  <Flex w={"100%"} justify="center">
                     <Skeleton h={10} w={40} borderRadius="md" />
                   </Flex>
                 )}
@@ -74,22 +76,22 @@ export const Dashboard = () => {
           ) : (
             // If there is no user in the list, show a message to create a new user
             <>
-              <Wrap justify="flex-end" mb={5}>
+              <Wrap justify="flex-start" mb={5}>
                 <Button colorScheme="green" onClick={onOpen}>
                   <Icon as={ReactIcons.Add} w={6} h={6} mr={2} />
                   Create a new user
                 </Button>
               </Wrap>
               {users.length === 0 && (
-                <Box w={"100%"} maxW={"1200px"} mt={10}>
+                <Box maxW={"1200px"} mt={10}>
                   <Heading textAlign="center" size="md">
                     There are no users, create a new one
                   </Heading>
                 </Box>
               )}
-              <Wrap w={"100%"} maxW={"1200px"} spacingX="138px" minH="64vh">
+              <Wrap maxW={"1200px"} minH="64vh" spacingX={[2, 15]}>
                 {users.map((user: User) => (
-                  <WrapItem key={user.id}>
+                  <WrapItem key={user.id} mr={[0, "5.1em"]}>
                     <CardUser user={user} />
                   </WrapItem>
                 ))}

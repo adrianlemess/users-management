@@ -5,7 +5,7 @@ import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/skeleton";
 
 export const CardSkeleton = () => {
   return (
-    <Card maxW="sm" mb={10}>
+    <Card maxW="sm" mb={10} data-testid="card-skeleton">
       <CardBody>
         <Flex justify="center">
           <SkeletonCircle size="10em" alignSelf={"center"} />

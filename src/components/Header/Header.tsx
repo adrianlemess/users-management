@@ -1,4 +1,10 @@
-import { Button, Flex, Heading, useColorModeValue } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  HStack,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuthStore } from "@/state";
@@ -33,10 +39,12 @@ export const Header = () => {
       shadow="md"
     >
       <Heading fontSize={["1em", "2em"]}>User Management</Heading>
-      <Button colorScheme="red" variant="outline" onClick={handleLogout}>
-        Logout
-      </Button>
-      <ThemeToggle />
+      <HStack spacing={5}>
+        <ThemeToggle />
+        <Button colorScheme="red" variant="outline" onClick={handleLogout}>
+          Logout
+        </Button>
+      </HStack>
     </Flex>
   );
 };

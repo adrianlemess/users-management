@@ -8,7 +8,7 @@ export const BaseLayout = () => {
   return (
     <RootLayout>
       <Header />
-      <Box flex="1" p="10" h="100%">
+      <Box py={10} h="100%" px="4" overflowX={"hidden"}>
         <Outlet />
       </Box>
     </RootLayout>

@@ -9,9 +9,6 @@ export const ThemeToggle = () => {
   return (
     <IconButton
       size="lg"
-      bottom="2em"
-      right="4"
-      position="fixed"
       color={color}
       border="1px solid"
       borderColor={borderColor}
@@ -19,7 +16,6 @@ export const ThemeToggle = () => {
         colorMode === "light" ? "toggle dark mode" : "toggle light mode"
       }
       icon={colorMode === "light" ? <ReactIcons.Moon /> : <ReactIcons.Sun />}
-      zIndex="sticky"
       onClick={toggleColorMode}
     />
   );
