@@ -15,7 +15,7 @@ export const handlers = [
     return HttpResponse.json(SignUpResponseMock);
   }),
 
-  http.post("/api/users", () => {
+  http.get("/api/users", () => {
     return HttpResponse.json(GetUsersResponseMock);
   }),
 ];

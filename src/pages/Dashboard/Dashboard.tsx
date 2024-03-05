@@ -5,11 +5,13 @@ import { getUsers } from "@/api/users";
 import { CardSkeleton } from "@/components/CardSkeleton/CardSkeleton";
 import { CardUser } from "@/components/CardUser/CardUser";
 import { Pagination, User } from "@/types";
+import { useAuthStore } from "@/state";
 
 export const Dashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const userSession = useAuthStore(state => state.userSession);
 
   useEffect(() => {
     setLoading(true);
@@ -27,7 +29,9 @@ export const Dashboard = () => {
 
   return (
     <Box>
-      <Heading data-testid="title">Welcome to Dashboard</Heading>
+      <Heading mb={10} data-testid="title">
+        Welcome {userSession?.first_name || userSession?.email}
+      </Heading>
       {error ? (
         <Flex w={"100%"} maxW={"1200px"} justify="space-between" wrap={"wrap"}>
           <Heading>Something went wrong</Heading>
