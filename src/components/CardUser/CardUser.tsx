@@ -7,12 +7,11 @@ import { Image } from "@chakra-ui/image";
 import { Divider, Flex, Heading, Stack, Text } from "@chakra-ui/layout";
 import { motion } from "framer-motion";
 
+import { DeleteConfirmationDialog } from "@/components/DeleteDialog/DeleteConfirmationDialog";
+import { ReactIcons } from "@/components/Icons/Icons";
+import { UserFormDrawer } from "@/components/UserFormDrawer/UserFormDrawer";
 import { useUsersStore } from "@/state/users";
 import { NewUser, User } from "@/types";
-
-import { DeleteConfirmationDialog } from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
-import { ReactIcons } from "../Icons/Icons";
-import { UserFormDrawer } from "../UserFormDrawer/UserFormDrawer";
 
 type ListItemProps = {
   user: User;
