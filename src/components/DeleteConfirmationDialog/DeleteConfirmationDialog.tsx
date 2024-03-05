@@ -25,11 +25,11 @@ export const DeleteConfirmationDialog = (
   return (
     <>
       <AlertDialog
+        isCentered
         leastDestructiveRef={cancelRef}
         isOpen={isOpen}
-        onClose={onClose}
         motionPreset="slideInBottom"
-        isCentered
+        onClose={onClose}
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
