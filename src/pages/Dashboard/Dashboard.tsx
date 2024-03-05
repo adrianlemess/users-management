@@ -1,24 +1,34 @@
 import { Box, Flex, Heading } from "@chakra-ui/layout";
-import { Button, Icon, Skeleton, Wrap } from "@chakra-ui/react";
+import { Button, Icon, Skeleton, useDisclosure, Wrap } from "@chakra-ui/react";
 import { useEffect } from "react";
 
 import { CardSkeleton } from "@/components/CardSkeleton/CardSkeleton";
 import { CardUser } from "@/components/CardUser/CardUser";
 import { ReactIcons } from "@/components/Icons/Icons";
 import { PaginationControl } from "@/components/PaginationControl/PaginationControl";
+import { UserFormDrawer } from "@/components/UserFormDrawer/UserFormDrawer";
 import { ITEMS_PER_PAGE } from "@/constants";
 import { useAuthStore } from "@/state";
 import { useUsersStore } from "@/state/users";
-import { User } from "@/types";
+import { NewUser, User } from "@/types";
 
 export const Dashboard = () => {
-  const { getUsers, requestStatus, users, pagination } = useUsersStore();
+  const {
+    getInitialUsers,
+    changePage,
+    createUser,
+    requestStatus,
+    users,
+    pagination,
+  } = useUsersStore();
 
+  // Hook to control the modal form for updating an user
   const userSession = useAuthStore(state => state.userSession);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    getUsers(1, ITEMS_PER_PAGE);
-  }, []);
+    getInitialUsers(1, ITEMS_PER_PAGE);
+  }, [getInitialUsers]);
 
   return (
     <>
@@ -59,9 +69,9 @@ export const Dashboard = () => {
           ) : (
             <>
               <Wrap justify="flex-end" mb={5}>
-                <Button colorScheme="green">
+                <Button colorScheme="green" onClick={onOpen}>
                   <Icon as={ReactIcons.Add} w={6} h={6} mr={2} />
-                  Create a User
+                  Create a new user
                 </Button>
               </Wrap>
 
@@ -85,9 +95,16 @@ export const Dashboard = () => {
               totalPages={pagination.total_pages}
               itemsPerPage={pagination.per_page}
               initialPage={pagination.page}
-              onPageChange={getUsers}
+              onPageChange={changePage}
             />
           </Flex>
+          <UserFormDrawer
+            isOpen={isOpen}
+            heading="Create a new user"
+            calToAction="Create"
+            onClose={onClose}
+            onSubmit={(user: NewUser) => createUser(user)}
+          />
         </>
       )}
     </>

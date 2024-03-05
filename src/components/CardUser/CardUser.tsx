@@ -1,14 +1,18 @@
 import { Button, ButtonGroup } from "@chakra-ui/button";
 import { Card, CardBody, CardFooter } from "@chakra-ui/card";
 import { useColorModeValue } from "@chakra-ui/color-mode";
+import { useDisclosure } from "@chakra-ui/hooks";
 import { Icon } from "@chakra-ui/icon";
 import { Image } from "@chakra-ui/image";
 import { Divider, Flex, Heading, Stack, Text } from "@chakra-ui/layout";
 import { motion } from "framer-motion";
 
+import { useUsersStore } from "@/state/users";
 import { User } from "@/types";
 
+import { DeleteConfirmationDialog } from "../DeleteConfirmationDialog/DeleteConfirmationDialog";
 import { ReactIcons } from "../Icons/Icons";
+import { UserFormDrawer } from "../UserFormDrawer/UserFormDrawer";
 
 type ListItemProps = {
   user: User;
@@ -17,8 +21,28 @@ type ListItemProps = {
 export const CardUser = (props: ListItemProps) => {
   const { user } = props;
 
+  const { deleteUser, updateUser } = useUsersStore();
+
+  const {
+    isOpen: isUpdateOpen,
+    onOpen: onUpdateOpen,
+    onClose: onUpdateClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onClose: onDeleteClose,
+  } = useDisclosure();
+
   const COLORS = {
     color: useColorModeValue("gray.600", "gray.300"),
+  };
+
+  const handlerDeleteUser = (userId: number) => {
+    deleteUser(userId).then(() => {
+      onDeleteClose();
+    });
   };
 
   return (
@@ -55,17 +79,32 @@ export const CardUser = (props: ListItemProps) => {
         <Divider />
         <CardFooter>
           <ButtonGroup spacing="2">
-            <Button variant="ghost" colorScheme="red">
+            <Button variant="ghost" colorScheme="red" onClick={onDeleteOpen}>
               <Icon as={ReactIcons.Thrash} boxSize={4} mr={2} />
               Delete User
             </Button>
 
-            <Button variant="solid" colorScheme="blue">
+            <Button variant="solid" colorScheme="blue" onClick={onUpdateOpen}>
               Update user
             </Button>
           </ButtonGroup>
         </CardFooter>
       </Card>
+      <UserFormDrawer
+        isOpen={isUpdateOpen}
+        heading={`Update user ${user.first_name}`}
+        calToAction="Update"
+        user={user}
+        onClose={onUpdateClose}
+        onSubmit={updateUser}
+      />
+      <DeleteConfirmationDialog
+        isOpen={isDeleteOpen}
+        userId={user.id}
+        deleteUser={handlerDeleteUser}
+        userEmail={user.email}
+        onClose={onDeleteClose}
+      />
     </motion.div>
   );
 };

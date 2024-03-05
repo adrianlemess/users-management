@@ -12,7 +12,6 @@ type PaginationProps = {
 export const PaginationControl = (pagination: PaginationProps) => {
   const { totalPages, onPageChange, itemsPerPage, initialPage } = pagination;
   const [activePage, setActivePage] = useState(initialPage);
-
   const onPageChangeHandler = (page: number) => {
     onPageChange(page, itemsPerPage);
     setActivePage(page);
@@ -25,9 +24,11 @@ export const PaginationControl = (pagination: PaginationProps) => {
         {pagesArray.map(pageNumber => (
           <Button
             key={pageNumber}
-            disabled={pagination.disabled}
+            isDisabled={pagination.disabled}
             colorScheme={activePage === pageNumber ? "blue" : "gray"}
-            onClick={() => onPageChangeHandler(pageNumber)}
+            onClick={() => {
+              onPageChangeHandler(pageNumber);
+            }}
           >
             {pageNumber}
           </Button>

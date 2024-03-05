@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 import { getUsers } from "@/api/users";
-import { Pagination, REQUEST_STATUS, User } from "@/types";
+import { NewUser, REQUEST_STATUS, User } from "@/types";
 
 export interface UsersState {
   users: User[];
@@ -11,13 +11,15 @@ export interface UsersState {
     total: number;
     total_pages: number;
   };
-  localUsers: Map<number, Pagination<User>>;
   requestStatus: REQUEST_STATUS;
-  getUsers: (page: number, itemsPerPage: number) => Promise<void>;
-  createUser: (user: User) => Promise<void>;
+  getInitialUsers: (page: number, itemsPerPage: number) => Promise<void>;
+  changePage: (page: number) => Promise<void>;
+  createUser: (user: NewUser) => Promise<void>;
   updateUser: (user: User) => Promise<void>;
-  deleteUser: (id: string) => Promise<void>;
+  deleteUser: (id: number) => Promise<void>;
 }
+
+const usersInMemoryPerPage = new Map<number, User[]>();
 
 export const useUsersStore = create<UsersState>()((set, get) => ({
   users: [],
@@ -27,43 +29,60 @@ export const useUsersStore = create<UsersState>()((set, get) => ({
     total: 0,
     total_pages: 0,
   },
-  localUsers: new Map<number, Pagination<User>>(),
   requestStatus: "idle",
-  getUsers: async (page: number, itemsPerPage) => {
-    set({ requestStatus: "pending" });
-    const localUsers = get().localUsers;
-
-    if (localUsers.has(page)) {
-      const userResponseCached = localUsers.get(page);
-
-      if (userResponseCached) {
-        set({
-          users: userResponseCached.data,
-          pagination: {
-            page: userResponseCached.page,
-            per_page: userResponseCached.per_page,
-            total: userResponseCached.total,
-            total_pages: userResponseCached.total_pages,
-          },
-          requestStatus: "resolved",
-        });
-        return;
-      }
-    }
-
+  getInitialUsers: async (page: number, itemsPerPage: number) => {
+    if (get().requestStatus === "pending") return;
     try {
-      const response = await getUsers(page, itemsPerPage);
+      set({ requestStatus: "pending" });
 
+      const response = await getUsers(page, itemsPerPage);
+      usersInMemoryPerPage.set(page, response.data);
       set({
         users: response.data || [],
-        localUsers: localUsers.set(page, response),
         pagination: {
           page: response.page,
           per_page: response.per_page,
           total: response.total,
           total_pages: response.total_pages,
         },
+        requestStatus: "resolved",
       });
+    } catch (error) {
+      set({ requestStatus: "rejected" });
+    }
+  },
+  changePage: async (page: number) => {
+    if (usersInMemoryPerPage.has(page)) {
+      const userResponseCached = usersInMemoryPerPage.get(page);
+
+      if (userResponseCached) {
+        set(state => ({
+          users: userResponseCached,
+          pagination: {
+            ...state.pagination,
+            page,
+          },
+        }));
+
+        return;
+      }
+    }
+
+    try {
+      set({ requestStatus: "pending" });
+
+      const response = await getUsers(page, 6);
+
+      const users = response.data || [];
+
+      usersInMemoryPerPage.set(page, users);
+      set(state => ({
+        users,
+        pagination: {
+          ...state.pagination,
+          page,
+        },
+      }));
       // If I update the request status along with the user / pagination state, it will bug the data displayed on the UI
       set({ requestStatus: "resolved" });
     } catch (error) {
@@ -76,7 +95,7 @@ export const useUsersStore = create<UsersState>()((set, get) => ({
   updateUser: async (user: User) => {
     console.log(user);
   },
-  deleteUser: async (id: string) => {
+  deleteUser: async (id: number) => {
     console.log(id);
   },
 }));
