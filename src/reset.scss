@@ -9,3 +9,8 @@ input::-ms-clear {
 ::-ms-reveal {
   display: none;
 }
+
+body,
+html {
+  height: 100%;
+}

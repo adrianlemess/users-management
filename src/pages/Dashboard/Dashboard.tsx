@@ -1,15 +1,46 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/layout";
+import { useEffect, useState } from "react";
 
-import { useAuthStore } from "@/state";
+import { getUsers } from "@/api/users";
+import { CardSkeleton } from "@/components/CardSkeleton/CardSkeleton";
+import { CardUser } from "@/components/CardUser/CardUser";
+import { Pagination, User } from "@/types";
 
 export const Dashboard = () => {
-  const userSession = useAuthStore(state => state.userSession);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getUsers()
+      .then((data: Pagination<User>) => {
+        setUsers(data.data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   return (
-    <Box>
-      <Heading data-testid="title">
-        Welcome {userSession?.first_name || userSession?.email || ""}
-      </Heading>
-    </Box>
+    <>
+      {loading ? (
+        <Flex w={"100%"} maxW={"1200px"} justify="space-between" wrap={"wrap"}>
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+        </Flex>
+      ) : (
+        <Flex w={"100%"} maxW={"1200px"} justify="space-between" wrap={"wrap"}>
+          {users.map((user: User) => (
+            <>
+              <CardUser key={user.id} user={user} />
+            </>
+          ))}
+        </Flex>
+      )}
+    </>
   );
 };

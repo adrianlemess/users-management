@@ -1,3 +1,11 @@
+export type Pagination<T> = {
+  page: number;
+  per_page: number;
+  total: number;
+  total_pages: number;
+  data: T[];
+};
+
 export type User = {
   // When we send the user to the API, we don't include the id
   id?: string;

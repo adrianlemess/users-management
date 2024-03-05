@@ -12,7 +12,7 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
       <Flex
         flexDirection="column"
         width="100wh"
-        height="100vh"
+        minHeight="100vh"
         backgroundColor={bg}
         justifyContent="center"
         alignItems="center"
