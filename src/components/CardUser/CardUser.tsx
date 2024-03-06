@@ -5,6 +5,7 @@ import { useDisclosure } from "@chakra-ui/hooks";
 import { Icon } from "@chakra-ui/icon";
 import { Image } from "@chakra-ui/image";
 import { Divider, Flex, Heading, Stack, Text } from "@chakra-ui/layout";
+import { useToast } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
 import { DeleteConfirmationDialog } from "@/components/DeleteDialog/DeleteConfirmationDialog";
@@ -33,6 +34,7 @@ export const CardUser = (props: ListItemProps) => {
     onOpen: onDeleteOpen,
     onClose: onDeleteClose,
   } = useDisclosure();
+  const toast = useToast();
 
   const COLORS = {
     color: useColorModeValue("gray.600", "gray.300"),
@@ -41,6 +43,14 @@ export const CardUser = (props: ListItemProps) => {
   const handlerDeleteUser = (userId: number) => {
     deleteUser(userId).then(() => {
       onDeleteClose();
+      toast({
+        title: "User Deleted.",
+        description: "We've Deleted the user for you.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
     });
   };
 
@@ -49,6 +59,14 @@ export const CardUser = (props: ListItemProps) => {
       // handle logic for existing user
       updateUser(user as User).then(() => {
         onUpdateClose();
+        toast({
+          title: "User Updated.",
+          description: "We've updated the user for you.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+        });
       });
     }
   };
@@ -101,7 +119,7 @@ export const CardUser = (props: ListItemProps) => {
       <UserFormDrawer
         isOpen={isUpdateOpen}
         heading={`Update user ${user.first_name}`}
-        calToAction="Update"
+        callToAction="Update"
         user={user}
         onClose={onUpdateClose}
         onSubmit={(user: User | NewUser) => handlerUpdateUser(user)}

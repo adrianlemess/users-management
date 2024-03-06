@@ -26,13 +26,13 @@ type UserFormDrawerProps = {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (user: NewUser | User) => void;
-  calToAction: string;
+  callToAction: string;
   user?: User;
   heading: string;
 };
 
 export const UserFormDrawer = (props: UserFormDrawerProps) => {
-  const { isOpen, onClose, calToAction, onSubmit, user, heading } = props;
+  const { isOpen, onClose, callToAction, onSubmit, user, heading } = props;
   const COLORS = {
     bg: useColorModeValue("white", "gray.600"),
     color: useColorModeValue("gray.700", "gray.200"),
@@ -55,12 +55,13 @@ export const UserFormDrawer = (props: UserFormDrawerProps) => {
             if (user) {
               onSubmit({ id: user.id, ...values });
             }
+
             onSubmit(values);
           }}
         >
           {() => (
             <Form>
-              <DrawerContent>
+              <DrawerContent data-testid="user-drawer-form">
                 <DrawerCloseButton />
                 <DrawerHeader borderBottomWidth="1px">{heading}</DrawerHeader>
                 <DrawerBody mt={10}>
@@ -89,6 +90,9 @@ export const UserFormDrawer = (props: UserFormDrawerProps) => {
                               />
                               <Input
                                 {...field}
+                                data-testid={
+                                  "input-first-name-" + user?.first_name
+                                }
                                 autoComplete="given-name"
                                 placeholder="First Name"
                               />
@@ -122,6 +126,9 @@ export const UserFormDrawer = (props: UserFormDrawerProps) => {
                               />
                               <Input
                                 {...field}
+                                data-testid={
+                                  "input-last-name-" + user?.last_name
+                                }
                                 autoComplete="last-name"
                                 placeholder="Last Name"
                               />
@@ -154,6 +161,7 @@ export const UserFormDrawer = (props: UserFormDrawerProps) => {
                               />
                               <Input
                                 {...field}
+                                data-testid={"input-email-" + user?.email}
                                 placeholder="Email address"
                                 autoComplete="email"
                               />
@@ -172,8 +180,12 @@ export const UserFormDrawer = (props: UserFormDrawerProps) => {
                   <Button variant="outline" mr={3} onClick={onClose}>
                     Cancel
                   </Button>
-                  <Button colorScheme="blue" type="submit">
-                    {calToAction}
+                  <Button
+                    colorScheme="blue"
+                    data-testid={`button-${callToAction.toLocaleLowerCase()}`}
+                    type="submit"
+                  >
+                    {callToAction}
                   </Button>
                 </DrawerFooter>
               </DrawerContent>

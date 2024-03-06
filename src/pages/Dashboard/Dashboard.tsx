@@ -1,5 +1,12 @@
 import { Box, Flex, Heading, Stack, WrapItem } from "@chakra-ui/layout";
-import { Button, Icon, Skeleton, useDisclosure, Wrap } from "@chakra-ui/react";
+import {
+  Button,
+  Icon,
+  Skeleton,
+  useDisclosure,
+  useToast,
+  Wrap,
+} from "@chakra-ui/react";
 import { useEffect } from "react";
 
 import { CardSkeleton } from "@/components/CardSkeleton/CardSkeleton";
@@ -22,6 +29,7 @@ export const Dashboard = () => {
     pagination,
     clearUsers,
   } = useUsersStore();
+  const toast = useToast();
 
   // Hook to control the modal form for updating an user
   const userSession = useAuthStore(state => state.userSession);
@@ -37,7 +45,16 @@ export const Dashboard = () => {
   }, []);
 
   const handlerCreateUser = async (user: NewUser) => {
-    createUser({ ...user });
+    createUser({ ...user }).then(() => {
+      toast({
+        title: "User created.",
+        description: "We've created the user for you.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+    });
     onClose();
   };
 
@@ -122,7 +139,7 @@ export const Dashboard = () => {
           <UserFormDrawer
             isOpen={isOpen}
             heading="Create a new user"
-            calToAction="Create"
+            callToAction="Create"
             onClose={onClose}
             onSubmit={(user: NewUser) => handlerCreateUser(user)}
           />
