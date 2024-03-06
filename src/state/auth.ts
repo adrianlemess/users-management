@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { UserSignResponse } from "@/types";
+
 import { useUsersStore } from "./users";
 
 export interface AuthState {
