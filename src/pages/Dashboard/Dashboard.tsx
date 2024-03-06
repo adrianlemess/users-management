@@ -63,7 +63,7 @@ export const Dashboard = () => {
                   {Array.from({ length: ITEMS_PER_PAGE }, (_, i) => (
                     <WrapItem
                       key={i}
-                      flex={["1 1 100%", "1 1 32%"]}
+                      flex={{ base: "1 1 100%", md: "1 0 32%", xl: "0 0 32%" }}
                       justifyContent={"center"}
                     >
                       <CardSkeleton />
@@ -97,7 +97,7 @@ export const Dashboard = () => {
                 {users.map((user: User) => (
                   <WrapItem
                     key={user.id}
-                    flex={["1 1 100%", "0 0 32%"]}
+                    flex={{ base: "1 1 100%", md: "1 0 32%", xl: "0 0 32%" }}
                     justifyContent={"center"}
                   >
                     <CardUser user={user} />
