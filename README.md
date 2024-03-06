@@ -41,9 +41,7 @@ Production URL Deployed: https://user-management-1global.vercel.app/
 
 Usually, I like to record small videos and add in every PR when it's UI changes. However since this is a home task with time constraint I decided to add one video demo with everything done.
 
-
 ![What the demo](https://github.com/adrianlemess/user-management-1global/assets/12432777/af882311-f37f-44ad-a174-d805b8655641)
-
 
 ## Getting started
 
@@ -214,7 +212,7 @@ The Axios interceptor is responsible for a few things:
 
 ### Delayed Requests
 
-To be able to see the loading state in the Dashboard, I added a 2-second delay to the GET /users request. You can check it in the network tab.
+To be able to see the loading state during my demo video, I added a 2-second delay to the GET /users request. You can check the same thing doing a throttling in the request.
 
 ### env Files
 

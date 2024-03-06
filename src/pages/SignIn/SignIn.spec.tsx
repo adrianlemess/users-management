@@ -62,7 +62,6 @@ describe("SignIn", () => {
   });
 
   it("Should show a loading button when sign in is pending", async () => {
-    // Mock service worker to delay response
     server.use(
       http.post("/api/login", async () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
