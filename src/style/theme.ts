@@ -32,18 +32,18 @@ const buttonTheme = defineStyleConfig({
     },
 
     toggle: {
-      bg: "teal.200",
+      bg: "transparent",
       color: "gray.700",
       border: "1px gray.800 solid",
       _hover: {
-        bg: "teal.400",
+        bg: "rgba(0,0,0,0.3)",
       },
       _dark: {
-        bg: "teal.800",
+        bg: "transparent",
         color: "orange",
         border: "1px gray.400 solid",
         _hover: {
-          bg: "teal.700",
+          bg: "rgba(0,0,0,0.6)",
         },
       },
     },
@@ -51,7 +51,7 @@ const buttonTheme = defineStyleConfig({
 });
 
 const config: ThemeConfig = {
-  initialColorMode: "system",
+  initialColorMode: "dark",
   useSystemColorMode: true,
 };
 
