@@ -28,6 +28,7 @@ export const DeleteConfirmationDialog = (
         isCentered
         leastDestructiveRef={cancelRef}
         isOpen={isOpen}
+        data-testid="delete-confirmation-dialog"
         motionPreset="slideInBottom"
         onClose={onClose}
       >
@@ -45,6 +46,7 @@ export const DeleteConfirmationDialog = (
             <AlertDialogFooter>
               <Button onClick={onClose}>Cancel</Button>
               <Button
+                data-testid={`delete-confirmation-button-${userEmail}`}
                 colorScheme="red"
                 ml={3}
                 onClick={() => deleteUser(userId)}
