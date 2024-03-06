@@ -97,7 +97,7 @@ export const Dashboard = () => {
                 {users.map((user: User) => (
                   <WrapItem
                     key={user.id}
-                    flex={["1 1 100%", "1 1 32%"]}
+                    flex={["1 1 100%", "0 0 32%"]}
                     justifyContent={"center"}
                   >
                     <CardUser user={user} />

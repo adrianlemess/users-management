@@ -18,6 +18,7 @@ export interface UsersState {
   createUser: (user: NewUser) => Promise<void>;
   updateUser: (user: User) => Promise<void>;
   deleteUser: (id: number) => Promise<void>;
+  clearUsers: () => void;
 }
 
 const usersInMemoryPerPage = new Map<number, User[]>();
@@ -141,6 +142,10 @@ export const useUsersStore = create<UsersState>()((set, get) => ({
     updateUserInMemory(user, currentPage);
 
     get().changePage(currentPage);
+  },
+  clearUsers: () => {
+    usersInMemoryPerPage.clear();
+    set({ users: [] });
   },
   deleteUser: async (id: number) => {
     const deleteUserInMemory = (id: number) => {

@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { UserSignResponse } from "@/types";
+import { useUsersStore } from "./users";
 
 export interface AuthState {
   userSession: UserSignResponse | null;
@@ -25,6 +26,7 @@ export const useAuthStore = create<AuthState>()(
       removeUserSession: () => {
         set({ userSession: null });
         localStorage.removeItem("auth");
+        useUsersStore.getState().clearUsers();
       },
       isAuthenticated: () => {
         // @TODO check if the token is valid and has not expired
