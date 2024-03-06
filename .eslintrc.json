@@ -84,6 +84,7 @@
         "jest/no-standalone-expect": "off",
         "jest/no-identical-title": "error",
         "jest/prefer-to-have-length": "warn",
+        "jest/no-commented-out-tests": "off",
         "jest/valid-expect": "error",
         "jest-dom/prefer-checked": "error",
         "jest-dom/prefer-enabled-disabled": "error",
