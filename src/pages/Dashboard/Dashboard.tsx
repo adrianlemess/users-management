@@ -1,5 +1,12 @@
 import { Box, Flex, Heading, Stack, WrapItem } from "@chakra-ui/layout";
-import { Button, Icon, Skeleton, useDisclosure, Wrap } from "@chakra-ui/react";
+import {
+  Button,
+  Icon,
+  Skeleton,
+  useDisclosure,
+  useToast,
+  Wrap,
+} from "@chakra-ui/react";
 import { useEffect } from "react";
 
 import { CardSkeleton } from "@/components/CardSkeleton/CardSkeleton";
@@ -20,7 +27,9 @@ export const Dashboard = () => {
     requestStatus,
     users,
     pagination,
+    clearUsers,
   } = useUsersStore();
+  const toast = useToast();
 
   // Hook to control the modal form for updating an user
   const userSession = useAuthStore(state => state.userSession);
@@ -28,10 +37,24 @@ export const Dashboard = () => {
 
   useEffect(() => {
     getInitialUsers(1, ITEMS_PER_PAGE);
-  }, [getInitialUsers]);
+
+    return () => {
+      // Clear users when the component is unmounted
+      clearUsers();
+    };
+  }, []);
 
   const handlerCreateUser = async (user: NewUser) => {
-    createUser({ ...user });
+    createUser({ ...user }).then(() => {
+      toast({
+        title: "User created.",
+        description: "We've created the user for you.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+    });
     onClose();
   };
 
@@ -59,18 +82,14 @@ export const Dashboard = () => {
                 justify="space-between"
                 wrap={"wrap"}
               >
-                <Wrap maxW={"1200px"} minH="64vh">
+                <Wrap minH="66vh" justify="center" spacing={10}>
                   {Array.from({ length: ITEMS_PER_PAGE }, (_, i) => (
-                    <WrapItem
-                      key={i}
-                      flex={["1 1 100%", "1 1 32%"]}
-                      justifyContent={"center"}
-                    >
+                    <WrapItem key={i} justifyContent={"center"}>
                       <CardSkeleton />
                     </WrapItem>
                   ))}
                   {
-                    <Flex w={"100%"} justify="center" mt={10}>
+                    <Flex w={"100%"} justify="center">
                       <Skeleton h={10} w={40} borderRadius="md" />
                     </Flex>
                   }
@@ -93,13 +112,15 @@ export const Dashboard = () => {
                   </Heading>
                 </Box>
               )}
-              <Wrap maxW={"1200px"} minH="64vh" overflow={"hidden"} spacing={0}>
+              <Wrap
+                maxW={"1200px"}
+                minH="66vh"
+                justify="center"
+                overflow={"hidden"}
+                spacing={10}
+              >
                 {users.map((user: User) => (
-                  <WrapItem
-                    key={user.id}
-                    flex={["1 1 100%", "1 1 32%"]}
-                    justifyContent={"center"}
-                  >
+                  <WrapItem key={user.id}>
                     <CardUser user={user} />
                   </WrapItem>
                 ))}
@@ -118,7 +139,7 @@ export const Dashboard = () => {
           <UserFormDrawer
             isOpen={isOpen}
             heading="Create a new user"
-            calToAction="Create"
+            callToAction="Create"
             onClose={onClose}
             onSubmit={(user: NewUser) => handlerCreateUser(user)}
           />
@@ -127,3 +148,5 @@ export const Dashboard = () => {
     </Stack>
   );
 };
+
+export default Dashboard;

@@ -1,10 +1,10 @@
 import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "url";
-import { defineConfig } from "vite";
+import { defineConfig, splitVendorChunkPlugin } from "vite";
 
 export default ({ mode }: { mode: string }) => {
   return defineConfig({
-    plugins: [react()],
+    plugins: [react(), splitVendorChunkPlugin()],
 
     build: {
       chunkSizeWarningLimit: 200,
@@ -12,8 +12,19 @@ export default ({ mode }: { mode: string }) => {
       rollupOptions: {
         output: {
           manualChunks(id) {
-            if (id.includes("node_modules")) {
-              return "vendors";
+            // If we split anything related with emotion or chakra-ui separately it will throw an error in the prod build
+            if (
+              id.includes("chakra-ui") ||
+              id.includes("framer-motion") ||
+              id.includes("emotion")
+            ) {
+              return "vendor";
+            } else if (id.includes("node_modules")) {
+              return id
+                .toString()
+                .split("node_modules/")[1]
+                .split("/")[0]
+                .toString();
             }
           },
         },

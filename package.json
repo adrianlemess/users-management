@@ -1,6 +1,6 @@
 {
   "name": "user-management-1global",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "author": {
     "name": "Adrian Lemes",
@@ -23,7 +23,7 @@
     "serve": "npm run build && vite preview --port 3000",
     "serve:staging": "npm run build:staging && vite preview --port 3000",
     "test": "jest --watch",
-    "test:ci": "jest",
+    "test:ci": "yarn test:coverage --ci",
     "test:coverage": "jest --silent --watchAll=false --coverage",
     "test:e2e": "start-server-and-test 'yarn serve' http://localhost:3000 'cypress open --config baseUrl=http://localhost:3000 --env app_url=http://localhost:3000'",
     "test:e2e:ci:chrome": "cypress run --headless --browser chrome",
@@ -65,6 +65,7 @@
     "@cypress/vite-dev-server": "^5.0.7",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
+    "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "^14.2.1",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.24",

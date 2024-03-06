@@ -18,6 +18,7 @@ export interface UsersState {
   createUser: (user: NewUser) => Promise<void>;
   updateUser: (user: User) => Promise<void>;
   deleteUser: (id: number) => Promise<void>;
+  clearUsers: () => void;
 }
 
 const usersInMemoryPerPage = new Map<number, User[]>();
@@ -45,13 +46,15 @@ export const useUsersStore = create<UsersState>()((set, get) => ({
 
       users.forEach((user, index) => {
         const page = Math.floor(index / ITEMS_PER_PAGE) + 1;
-        const usersInCurrentPage = usersInMemoryPerPage.get(page) || [];
-        usersInCurrentPage.push(user);
+        const usersInCurrentPage = [
+          ...(usersInMemoryPerPage.get(page) || []),
+          user,
+        ];
         usersInMemoryPerPage.set(page, usersInCurrentPage);
       });
 
       set({
-        users: usersInMemoryPerPage.get(page) || [],
+        users: [...(usersInMemoryPerPage.get(page) || [])],
         pagination: {
           page: response.page,
           per_page: ITEMS_PER_PAGE,
@@ -67,12 +70,6 @@ export const useUsersStore = create<UsersState>()((set, get) => ({
   changePage: (page: number) => {
     if (usersInMemoryPerPage.has(page)) {
       const userResponseCached = usersInMemoryPerPage.get(page);
-      console.log("changePage", {
-        userResponseCached,
-        page,
-        pagination: get().pagination,
-      });
-
       if (userResponseCached) {
         set(state => ({
           users: userResponseCached,
@@ -142,6 +139,10 @@ export const useUsersStore = create<UsersState>()((set, get) => ({
 
     get().changePage(currentPage);
   },
+  clearUsers: () => {
+    usersInMemoryPerPage.clear();
+    set({ users: [] });
+  },
   deleteUser: async (id: number) => {
     const deleteUserInMemory = (id: number) => {
       const currentPage = get().pagination.page;
@@ -161,8 +162,6 @@ export const useUsersStore = create<UsersState>()((set, get) => ({
       } else {
         usersInMemoryPerPage.set(currentPage, [...newUsers]);
       }
-
-      console.log({ newUsers, usersFromNextPage, currentPage });
 
       if (newUsers.length === 0 && currentPage > 1) {
         usersInMemoryPerPage.delete(currentPage);

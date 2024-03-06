@@ -1,39 +1,25 @@
-/// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+import { CONFIG_VAR } from "../e2e/config";
+import { AUTH_SELECTORS } from "../e2e/selectors/auth";
+
+Cypress.Commands.add("signin", () => {
+  cy.visit(`${CONFIG_VAR.app_url}/signin`);
+  cy.get(AUTH_SELECTORS.email).type(CONFIG_VAR.validUser.email);
+  cy.get(AUTH_SELECTORS.password).type(CONFIG_VAR.validUser.password);
+
+  cy.contains("Sign In").click();
+
+  cy.url().should("include", "/dashboard");
+
+  cy.contains(`Welcome ${CONFIG_VAR.validUser.email}`).should("exist");
+});
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Cypress {
+    interface Chainable {
+      signin(): Chainable<void>;
+    }
+  }
+}
 
 export {};

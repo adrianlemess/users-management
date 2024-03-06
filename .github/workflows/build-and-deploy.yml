@@ -14,8 +14,7 @@ jobs:
     timeout-minutes: 15
     strategy:
       matrix:
-        inspection_command:
-          ["lint:ci", "prettier:ci", "typecheck", "test:coverage"]
+        inspection_command: ["lint:ci", "prettier:ci", "typecheck", "test:ci"]
 
     steps:
       - name: Checkout

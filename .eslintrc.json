@@ -84,6 +84,7 @@
         "jest/no-standalone-expect": "off",
         "jest/no-identical-title": "error",
         "jest/prefer-to-have-length": "warn",
+        "jest/no-commented-out-tests": "off",
         "jest/valid-expect": "error",
         "jest-dom/prefer-checked": "error",
         "jest-dom/prefer-enabled-disabled": "error",
@@ -102,7 +103,8 @@
         "cypress/no-force": "warn",
         "cypress/assertion-before-screenshot": "warn",
         "cypress/require-data-selectors": "off",
-        "cypress/no-pause": "error"
+        "cypress/no-pause": "error",
+        "cypress/unsafe-to-chain-command": "off"
       },
       "env": {
         "cypress/globals": true // enable Cypress global variables.

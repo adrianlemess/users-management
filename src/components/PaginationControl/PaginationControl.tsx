@@ -24,6 +24,7 @@ export const PaginationControl = (pagination: PaginationProps) => {
         {pagesArray.map(pageNumber => (
           <Button
             key={pageNumber}
+            data-testid={`pagination-button-${pageNumber}`}
             isDisabled={pagination.disabled}
             colorScheme={activePage === pageNumber ? "blue" : "gray"}
             onClick={() => {
