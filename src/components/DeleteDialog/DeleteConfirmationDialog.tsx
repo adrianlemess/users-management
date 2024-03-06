@@ -46,7 +46,7 @@ export const DeleteConfirmationDialog = (
             <AlertDialogFooter>
               <Button onClick={onClose}>Cancel</Button>
               <Button
-                data-testid={`delete-confirmation-button-${userEmail}`}
+                data-testid={`delete-confirmation-button`}
                 colorScheme="red"
                 ml={3}
                 onClick={() => deleteUser(userId)}

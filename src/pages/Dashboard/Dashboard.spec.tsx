@@ -6,7 +6,7 @@ import {
   waitFor,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { http, HttpResponse } from "msw";
+import { HttpResponse, http } from "msw";
 import React from "react";
 
 import { GetUsersResponseMock } from "../../__tests__/msw/mock";
@@ -269,9 +269,6 @@ describe("Dashboard", () => {
   it("Should delete a user", async () => {
     await renderDashboardAndWaitLoadingFinish();
 
-    // Get the first user from mock
-    const user = GetUsersResponseMock.data[0];
-
     // Get the first Delete user button
     const deleteButton = await screen.findAllByText("Delete User");
 
@@ -280,7 +277,7 @@ describe("Dashboard", () => {
 
     await waitFor(() => {
       const confirmationButton = screen.getByTestId(
-        `delete-confirmation-button-${user.email}`,
+        `delete-confirmation-button`,
       );
       confirmationButton.click();
     });

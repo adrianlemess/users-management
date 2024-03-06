@@ -60,7 +60,7 @@ export const CardUser = (props: ListItemProps) => {
       updateUser(user as User).then(() => {
         onUpdateClose();
         toast({
-          title: "User Updated.",
+          title: "User updated.",
           description: "We've updated the user for you.",
           status: "success",
           duration: 5000,
@@ -111,7 +111,7 @@ export const CardUser = (props: ListItemProps) => {
             </Button>
 
             <Button variant="solid" colorScheme="blue" onClick={onUpdateOpen}>
-              Update user
+              Update User
             </Button>
           </ButtonGroup>
         </CardFooter>
