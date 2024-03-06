@@ -131,6 +131,17 @@ That's why I also pick testing library to create the integration tests.
 
 Ci wasn't a requirement, however I though would be a good way to show snapshots of my progress (I talk about more that in the next section). Also, I like to explore some Ops areas, specially CI, docker and deploy of apps, so was a good way to demonstrate this.
 
+![Ci](./docs/ci.png)
+
+- Job Inspections: I run project validations in parallel like type check, lint, prettier and integration / unit tests with jest and testing library
+- Build: creates the artifact to be deployed
+- Deploy in Vercel: deploy a preview environment and also comment in the PR with the preview URL
+- E2E with cypress: Once I have the preview URL deployed I run the E2E tests on Chrome
+
+Production
+
+- I have another pipeline way simple just to deploy in production once the PR is merged on `main`.
+
 ### PRs Story and Preview URLs
 
 I organized my PRs into phases, but things got a bit mixed up in the end. Once Phase 1 was completed, which included the Sign In and Sign Up pages, I began working on the `Dark Theme` (Phase 3) and E2E tests (Phase 4) for those screens.
