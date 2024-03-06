@@ -4,6 +4,9 @@ const email = Yup.string()
   .email("Invalid email address")
   .required("Email is required");
 
+const first_name = Yup.string().required("First Name is required");
+const last_name = Yup.string().required("Last Name is required");
+
 const password = Yup.string().required("Password is required");
 
 export const SignInSchema = Yup.object().shape({
@@ -19,6 +22,12 @@ export const SignUpSchema = Yup.object().shape({
   confirmation_password: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Confirmation Password is required"),
-  first_name: Yup.string().required("First Name is required"),
-  last_name: Yup.string().required("Last Name is required"),
+  first_name,
+  last_name,
+});
+
+export const createUpdateUserSchema = Yup.object().shape({
+  email,
+  first_name,
+  last_name,
 });

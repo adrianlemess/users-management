@@ -1,14 +1,21 @@
 import { Box } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 
-import { Header } from "../../Header/Header";
-import { RootLayout } from "../RootLayout/RootLayout";
+import { Header } from "@/components/Header/Header";
+import { RootLayout } from "@/components/Layout/RootLayout/RootLayout";
 
 export const BaseLayout = () => {
   return (
     <RootLayout>
       <Header />
-      <Box flex="1" p="10" h="100%">
+      <Box
+        minHeight="100vh"
+        mt={20}
+        pt={10}
+        px="4"
+        mx="auto"
+        overflow={"hidden"}
+      >
         <Outlet />
       </Box>
     </RootLayout>

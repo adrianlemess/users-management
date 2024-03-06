@@ -30,6 +30,23 @@ const buttonTheme = defineStyleConfig({
         },
       },
     },
+
+    toggle: {
+      bg: "teal.200",
+      color: "gray.700",
+      border: "1px gray.800 solid",
+      _hover: {
+        bg: "teal.400",
+      },
+      _dark: {
+        bg: "teal.800",
+        color: "orange",
+        border: "1px gray.400 solid",
+        _hover: {
+          bg: "teal.700",
+        },
+      },
+    },
   },
 });
 
