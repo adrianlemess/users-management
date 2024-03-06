@@ -20,6 +20,7 @@ export const Dashboard = () => {
     requestStatus,
     users,
     pagination,
+    clearUsers,
   } = useUsersStore();
 
   // Hook to control the modal form for updating an user
@@ -28,7 +29,12 @@ export const Dashboard = () => {
 
   useEffect(() => {
     getInitialUsers(1, ITEMS_PER_PAGE);
-  }, [getInitialUsers]);
+
+    return () => {
+      // Clear users when the component is unmounted
+      clearUsers();
+    };
+  }, []);
 
   const handlerCreateUser = async (user: NewUser) => {
     createUser({ ...user });
@@ -59,18 +65,14 @@ export const Dashboard = () => {
                 justify="space-between"
                 wrap={"wrap"}
               >
-                <Wrap maxW={"1200px"} minH="64vh">
+                <Wrap minH="66vh" justify="center" spacing={10}>
                   {Array.from({ length: ITEMS_PER_PAGE }, (_, i) => (
-                    <WrapItem
-                      key={i}
-                      flex={{ base: "1 1 100%", md: "1 0 32%", xl: "0 0 32%" }}
-                      justifyContent={"center"}
-                    >
+                    <WrapItem key={i} justifyContent={"center"}>
                       <CardSkeleton />
                     </WrapItem>
                   ))}
                   {
-                    <Flex w={"100%"} justify="center" mt={10}>
+                    <Flex w={"100%"} justify="center">
                       <Skeleton h={10} w={40} borderRadius="md" />
                     </Flex>
                   }
@@ -93,13 +95,15 @@ export const Dashboard = () => {
                   </Heading>
                 </Box>
               )}
-              <Wrap maxW={"1200px"} minH="64vh" overflow={"hidden"} spacing={0}>
+              <Wrap
+                maxW={"1200px"}
+                minH="66vh"
+                justify="center"
+                overflow={"hidden"}
+                spacing={10}
+              >
                 {users.map((user: User) => (
-                  <WrapItem
-                    key={user.id}
-                    flex={{ base: "1 1 100%", md: "1 0 32%", xl: "0 0 32%" }}
-                    justifyContent={"center"}
-                  >
+                  <WrapItem key={user.id}>
                     <CardUser user={user} />
                   </WrapItem>
                 ))}

@@ -46,13 +46,15 @@ export const useUsersStore = create<UsersState>()((set, get) => ({
 
       users.forEach((user, index) => {
         const page = Math.floor(index / ITEMS_PER_PAGE) + 1;
-        const usersInCurrentPage = usersInMemoryPerPage.get(page) || [];
-        usersInCurrentPage.push(user);
+        const usersInCurrentPage = [
+          ...(usersInMemoryPerPage.get(page) || []),
+          user,
+        ];
         usersInMemoryPerPage.set(page, usersInCurrentPage);
       });
 
       set({
-        users: usersInMemoryPerPage.get(page) || [],
+        users: [...(usersInMemoryPerPage.get(page) || [])],
         pagination: {
           page: response.page,
           per_page: ITEMS_PER_PAGE,
