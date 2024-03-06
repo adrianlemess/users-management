@@ -99,3 +99,10 @@ export const GetUsersResponseMock = {
     },
   ],
 };
+
+export const USER_SESSION_MOCK = {
+  state: {
+    userSession: { token: "QpwL5tke4Pnpja7X4", email: "eve.holt@reqres.in" },
+  },
+  version: 0,
+};

@@ -68,12 +68,6 @@ export const useUsersStore = create<UsersState>()((set, get) => ({
   changePage: (page: number) => {
     if (usersInMemoryPerPage.has(page)) {
       const userResponseCached = usersInMemoryPerPage.get(page);
-      console.log("changePage", {
-        userResponseCached,
-        page,
-        pagination: get().pagination,
-      });
-
       if (userResponseCached) {
         set(state => ({
           users: userResponseCached,
@@ -166,8 +160,6 @@ export const useUsersStore = create<UsersState>()((set, get) => ({
       } else {
         usersInMemoryPerPage.set(currentPage, [...newUsers]);
       }
-
-      console.log({ newUsers, usersFromNextPage, currentPage });
 
       if (newUsers.length === 0 && currentPage > 1) {
         usersInMemoryPerPage.delete(currentPage);
