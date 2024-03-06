@@ -1,3 +1,5 @@
+import { Spinner } from "@chakra-ui/react";
+import React, { Suspense } from "react";
 import {
   createBrowserRouter,
   redirect,
@@ -7,11 +9,13 @@ import {
 import { AnimatedBaseLayout } from "@/components/Layout/AnimatedBaseLayout/AnimatedBaseLayout";
 import { BaseLayout } from "@/components/Layout/BaseLayout/BaseLayout";
 import { ErrorBoundaryLayout } from "@/components/Layout/ErrorBoundaryLayout/ErrorBoundaryLayout";
-import { Dashboard } from "@/pages/Dashboard/Dashboard";
-import { SignIn } from "@/pages/SignIn/SignIn";
-import { SignUp } from "@/pages/SignUp/SignUp";
 
 import { useAuthStore } from "./state";
+
+// Import the pages using lazy loading
+const Dashboard = React.lazy(() => import("./pages/Dashboard/Dashboard"));
+const SignIn = React.lazy(() => import("@/pages/SignIn/SignIn"));
+const SignUp = React.lazy(() => import("@/pages/SignUp/SignUp"));
 
 const router = createBrowserRouter([
   {
@@ -23,7 +27,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <Dashboard />,
+            element: (
+              <Suspense fallback={<Spinner color="red.500" />}>
+                <Dashboard />
+              </Suspense>
+            ),
             loader: async () => {
               const isAuthenticated = useAuthStore.getState().isAuthenticated();
               if (!isAuthenticated) {
@@ -40,7 +48,11 @@ const router = createBrowserRouter([
         element: <AnimatedBaseLayout />,
         children: [
           {
-            element: <SignIn />,
+            element: (
+              <Suspense fallback={<Spinner color="red.500" />}>
+                <SignIn />
+              </Suspense>
+            ),
             index: true,
           },
         ],
@@ -50,7 +62,11 @@ const router = createBrowserRouter([
         element: <AnimatedBaseLayout />,
         children: [
           {
-            element: <SignUp />,
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                <SignUp />
+              </Suspense>
+            ),
             index: true,
           },
         ],

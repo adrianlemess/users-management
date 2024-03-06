@@ -148,3 +148,5 @@ export const Dashboard = () => {
     </Stack>
   );
 };
+
+export default Dashboard;

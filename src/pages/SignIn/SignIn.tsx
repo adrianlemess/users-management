@@ -191,3 +191,5 @@ export const SignIn = () => {
     </Box>
   );
 };
+
+export default SignIn;

@@ -6,7 +6,7 @@ import {
   waitFor,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { HttpResponse, http } from "msw";
+import { http, HttpResponse } from "msw";
 import React from "react";
 
 import { GetUsersResponseMock } from "../../__tests__/msw/mock";
