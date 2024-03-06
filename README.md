@@ -5,6 +5,8 @@ This is a home task for a user management system. The main goal is to create a u
 - Sign in
 - Sign up
 - Dashboard with CRUD operations
+- Dark Theme
+- Tests
 
 Kanban and tasks planned [here](https://occipital-eater-a86.notion.site/d1fa98ddd34148f18bedec785d373469?v=0f9997d3f912470abc6ecccb705476ab&pvs=4)
 
@@ -88,6 +90,8 @@ Check if the image is running properly:
 docker ps
 ```
 
+Stop the image if necessary
+
 ```sh
 docker stop -t=0 id_image
 ```
@@ -95,6 +99,10 @@ docker stop -t=0 id_image
 ## Testing
 
 ### Trophy test approach
+
+My test strategy was based in the [Trophy test approach by Kent Dodds](https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications)
+
+That's why I also pick testing library to create the integration tests.
 
 ### E2E test structure
 
@@ -113,7 +121,7 @@ docker stop -t=0 id_image
 | ------------------------------------------ | -------------------------- |
 | Run unit / integration tests and watch     | `yarn test`                |
 | Run unit / integration tests with coverage | `yarn test:coverage`       |
-| Run e2e tests                              | `yarn test:e2e`            |
+| Run e2e tests local                        | `yarn test:e2e`            |
 | Run e2e tests in CI (Chrome)               | `yarn test:e2e:ci:chrome`  |
 | Run e2e tests in CI (Firefox)              | `yarn test:e2e:ci:firefox` |
 
@@ -121,13 +129,13 @@ docker stop -t=0 id_image
 
 ### CI
 
-Ci wasn't a requirement, I though would be a good way to show snapshots of my progress (I talk about more that in the next section). Also, I like to explore some Ops areas, specially CI, docker and deploy of apps, so was a good way to demonstrate this.
+Ci wasn't a requirement, however I though would be a good way to show snapshots of my progress (I talk about more that in the next section). Also, I like to explore some Ops areas, specially CI, docker and deploy of apps, so was a good way to demonstrate this.
 
 ### PRs Story and Preview URLs
 
 I organized my PRs into phases, but things got a bit mixed up in the end. Once Phase 1 was completed, which included the Sign In and Sign Up pages, I began working on the `Dark Theme` (Phase 3) and E2E tests (Phase 4) for those screens.
 
-This early work significantly streamlined my efforts when developing the dashboard later on, with tests and dark theme setup.
+This early work significantly streamlined my efforts when developing the dashboard later on, with tests and dark theme setup already done.
 
 The initial structure of the repo, as well as the CI configuration, was directly committed to the `main` branch. You can see the task details [here](https://www.notion.so/Initial-structure-8d959b3c80664760a298b9d5e76f85e9?pvs=4).
 
@@ -149,12 +157,21 @@ It was a possible improvement for me to do, but I forgot to select "squash" for 
 
 ### Responsiveness
 
-- I considered the following sizes:
+I considered the following sizes:
 
 - Mobile
 - Ipad mini
 - Ipad pro
 - Web
+
+### Browsers
+
+I considered and tested the following browsers:
+
+- Chrome
+- Safari
+- Firefox
+- Edge (Chromium Based)
 
 ### State management algorithm
 
@@ -180,6 +197,8 @@ The Axios interceptor is responsible for a few things:
    - You can check the /users request in the network as soon as the Dashboard is loaded.
 3. Redirecting to the SignIn page if there is no token saved in localStorage.
 
+![Authorization Token](./docs/authorization-token.png)
+
 ### Delayed Requests
 
 To be able to see the loading state in the Dashboard, I added a 2-second delay to the GET /users request. You can check it in the network tab.
@@ -190,11 +209,29 @@ This project supports .env and .env.production files, so you can have different 
 
 ### Performance improvements
 
-- useCallback and useMemo
-- Lighthouse
-- Vendor split
+1. Lighthouse
 
-## Possible Improvements
+I run the lighthouse to check how was the app running. There were a few stuff I could improve here for sure.
+
+![Lithhouse](./docs/lighthouse.png)
+
+2. Vendor split
+
+In vite.config.ts I add a manual chunk function to split the vendors. I couldn't split the things related with Chakra-ui due some bugs I was facing after building the app.
+
+Before this improvement:
+
+![Before optimization](./docs/build-before-optimization.png)
+
+After this improvement:
+
+![After optimization](./docs/build-after-optimization.png)
+
+3. Lazy loading
+
+I've added lazy loading for the 3 main routes. Considering that sometimes the entrypoint might be the dashboard (if there is a user session) or the sign up, I decided to add in the 3 main components.
+
+## Future Improvements
 
 - Security
   - Implement a BFF service in NodeJS to encrypt passwords, as they are currently send in the network in plain text.
@@ -202,6 +239,7 @@ This project supports .env and .env.production files, so you can have different 
 - Add test coverage validation in the CI pipeline with a minimum threshold.
 - Improve the mobile experience in the dashboard, especially the pagination. Consider implementing infinite scroll.
 - Enhance the layout of the pagination component. Keep it simple, but make it visually appealing.
+- Add more tests scenarios for both unit/integration tests and e2e
 
 ## Other commands
 
