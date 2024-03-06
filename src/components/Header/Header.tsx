@@ -28,11 +28,14 @@ export const Header = () => {
   return (
     <Flex
       as="header"
+      position={"fixed"}
       align="center"
+      top={0}
       justify="space-between"
       wrap={"wrap"}
       p={6}
       w={"100%"}
+      zIndex={100}
       borderWidth="1px"
       bg={COLORS.bg}
       color={COLORS.color}

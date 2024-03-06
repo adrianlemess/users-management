@@ -310,7 +310,7 @@ export const SignUp = () => {
           </Formik>
         </Stack>
       </Stack>
-      <Flex justifyContent="start">
+      <Flex justifyContent="end">
         Already have an account?{" "}
         <Link color={COLORS.link} as={ReactRouterLink} to="/signin" ml={2}>
           Sign In

@@ -11,7 +11,6 @@ export const RootLayout = ({ children }: RootLayoutProps) => {
     <>
       <Flex
         flexDirection="column"
-        minHeight="100vh"
         width="full"
         backgroundColor={bg}
         overflowX={"hidden"}

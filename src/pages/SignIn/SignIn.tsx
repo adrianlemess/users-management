@@ -182,7 +182,7 @@ export const SignIn = () => {
           </Formik>
         </Stack>
       </Stack>
-      <Flex justifyContent="start">
+      <Flex justifyContent="end">
         New to us?{" "}
         <Link color={COLORS.link} as={ReactRouterLink} to="/signup" ml={2}>
           Sign Up

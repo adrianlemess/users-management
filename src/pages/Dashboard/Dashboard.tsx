@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, WrapItem } from "@chakra-ui/layout";
+import { Box, Flex, Heading, Stack, WrapItem } from "@chakra-ui/layout";
 import { Button, Icon, Skeleton, useDisclosure, Wrap } from "@chakra-ui/react";
 import { useEffect } from "react";
 
@@ -36,7 +36,7 @@ export const Dashboard = () => {
   };
 
   return (
-    <>
+    <Stack>
       <Heading mb={10} data-testid="title">
         Welcome {userSession?.first_name || userSession?.email}
       </Heading>
@@ -50,7 +50,7 @@ export const Dashboard = () => {
           {requestStatus === "pending" ? (
             <>
               {/* Create button skeleton */}
-              <Wrap justify="flex-start" mb={5}>
+              <Wrap justify="center" mb={5}>
                 <Skeleton h={10} w={"200px"} borderRadius="md" />
               </Wrap>
               <Flex
@@ -59,24 +59,28 @@ export const Dashboard = () => {
                 justify="space-between"
                 wrap={"wrap"}
               >
-                <Wrap maxW={"1200px"} minH="64vh" spacingX={[2, 15]}>
+                <Wrap maxW={"1200px"} minH="64vh">
                   {Array.from({ length: ITEMS_PER_PAGE }, (_, i) => (
-                    <WrapItem key={i} mr={[0, "5.1em"]}>
+                    <WrapItem
+                      key={i}
+                      flex={["1 1 100%", "1 1 32%"]}
+                      justifyContent={"center"}
+                    >
                       <CardSkeleton />
                     </WrapItem>
                   ))}
+                  {
+                    <Flex w={"100%"} justify="center" mt={10}>
+                      <Skeleton h={10} w={40} borderRadius="md" />
+                    </Flex>
+                  }
                 </Wrap>
-                {users.length === 0 && (
-                  <Flex w={"100%"} justify="center">
-                    <Skeleton h={10} w={40} borderRadius="md" />
-                  </Flex>
-                )}
               </Flex>
             </>
           ) : (
             // If there is no user in the list, show a message to create a new user
             <>
-              <Wrap justify="flex-start" mb={5}>
+              <Wrap justify="center" mb={5}>
                 <Button colorScheme="green" onClick={onOpen}>
                   <Icon as={ReactIcons.Add} w={6} h={6} mr={2} />
                   Create a new user
@@ -89,16 +93,20 @@ export const Dashboard = () => {
                   </Heading>
                 </Box>
               )}
-              <Wrap maxW={"1200px"} minH="64vh" spacingX={[2, 15]}>
+              <Wrap maxW={"1200px"} minH="64vh" overflow={"hidden"} spacing={0}>
                 {users.map((user: User) => (
-                  <WrapItem key={user.id} mr={[0, "5.1em"]}>
+                  <WrapItem
+                    key={user.id}
+                    flex={["1 1 100%", "1 1 32%"]}
+                    justifyContent={"center"}
+                  >
                     <CardUser user={user} />
                   </WrapItem>
                 ))}
               </Wrap>
             </>
           )}
-          <Flex mt={10} justify="center">
+          <Flex mt={5} mb={5} justify="center">
             <PaginationControl
               disabled={requestStatus === "pending"}
               totalPages={pagination.total_pages}
@@ -116,6 +124,6 @@ export const Dashboard = () => {
           />
         </>
       )}
-    </>
+    </Stack>
   );
 };

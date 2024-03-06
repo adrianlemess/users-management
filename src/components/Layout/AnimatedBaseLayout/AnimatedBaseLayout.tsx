@@ -1,3 +1,4 @@
+import { Box, Flex } from "@chakra-ui/layout";
 import { motion } from "framer-motion";
 import { Outlet, useLocation } from "react-router-dom";
 
@@ -21,9 +22,14 @@ export const AnimatedBaseLayout = () => {
         initial={"initial"}
         variants={pageMotion}
       >
-        <Outlet />
+        <Box right={5} top={5} position={"fixed"}>
+          <ThemeToggle />
+        </Box>
+
+        <Flex alignItems="center" height="100vh">
+          <Outlet />
+        </Flex>
       </motion.div>
-      <ThemeToggle />
     </RootLayout>
   );
 };
