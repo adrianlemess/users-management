@@ -1,6 +1,8 @@
 # User Management - POC
 
-This is a home task for a user management system. The main goal is to create a user management system with the following features:
+This is a POC for a user management system. The main goal is to create a user management system and practice some technologies around React.
+
+Here is the features implemented:
 
 - Sign in
 - Sign up
