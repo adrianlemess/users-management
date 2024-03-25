@@ -1,0 +1,7 @@
+defaults
+not IE 11
+not op_mini all
+Edge 16
+Chrome 60
+Firefox 54
+Safari 10.1
